@@ -13,11 +13,28 @@
         document.addEventListener( 'resume', onResume.bind( this ), false );
         
         // TODO: Cordova が読み込まれました。ここで、Cordova を必要とする初期化を実行します。
-        /*var parentElement = document.getElementById('deviceready');
+        var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
         listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');*/
+        document.getElementsByClassName('app')[0].setAttribute('style', 'display:none;');
+
+        var loadSongButton = document.getElementById('load_song');
+        loadSongButton.addEventListener('click', function(e){
+            var songTypeElement = document.getElementById('song_type');
+            var songIdElement = document.getElementById('song_id');
+            var songType = songTypeElement.getAttribute('value');
+            var songId = songIdElement.getAttribute('value');
+            if (songId == "") {
+                window.navigator.notification.alert(
+                    "Please type a correct ID",
+                    function () { },
+                    "Error",
+                    "OK"
+                );
+                return;
+            }
+            
+        });
     };
 
     function onPause() {

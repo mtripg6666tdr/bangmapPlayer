@@ -1,0 +1,28 @@
+﻿/*
+// bangmapPlayer Stylesheet
+// @author:     mtripg6666tdr
+// @homepage:   https://scrpg.tyanoyu.net/
+// @Twitter:    @mtripg6666tdr
+// @GitHub:     @mtripg6666tdr
+// @Created By: VisualStudio 2017, Brackets
+*/
+/* !Start Stylesheet for Debug */
+div.app {
+    display: none;
+}
+/* !End Stylesheet for Debug */
+* {
+    font-size: 110%;
+}
+div.app_game {
+    display: none;
+}
+body {
+    background-color: white;
+}
+.match_parent_width {
+    width: 100%;
+}
+table#setting_songInfo_table {
+    display: none;
+}

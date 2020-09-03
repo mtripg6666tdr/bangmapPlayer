@@ -5,26 +5,93 @@
         必要に応じて、次のメタ タグでコンテンツ セキュリティ ポリシーをカスタマイズします。default-src に 'unsafe-inline' を追加して、インライン JavaScript を有効にします。
         詳細については、http://go.microsoft.com/fwlink/?LinkID=617521 を参照してください。
     -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: https://ssl.gstatic.com https://bestdori.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *" />
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
         <title>bangmapPlayer</title>
     </head>
     <body>
-        <!--div class="app">
+        <div class="app">
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">デバイスに接続しています</p>
-                <p class="event received">デバイスの準備が完了しました</p>
             </div>
         </div>
-        <script type="text/javascript" src="cordova.js"></script-->
+        <!--Map Player-->
         <div class="app_game"></div>
-        <script type="text/javascript" src="scripts/main.5383309c.js"></script>
+        <!--Play Setting-->
+        <div class="setting">
+            <div class="setting_mainpanel">
+                <p class="match_parent_width">
+                    <select name="song_type" id="song_type">
+                        <option value="official">Official</option>
+                        <option value="community">Community</option>
+                    </select>
+                    <input type="text" name="song_id" id="song_id" placeholder="Type ID of song..." />
+                </p>
+                <p class="match_parent_width">
+                    <button type="button" name="load_song" id="load_song" class="match_parent_width">Load selected song</button>
+                </p>
+            </div>
+            <div class="setting_songInfo">
+                <table class="match_parent_width" id="setting_songInfo_table">
+                    <tr>
+                        <td>Title</td>
+                        <td colspan="4" id="song_name">約束</td>
+                    </tr>
+                    <tr>
+                        <td>Band</td>
+                        <td colspan="4" id="song_band">Roselia</td>
+                    </tr>
+                    <tr>
+                        <td>Difficulty</td>
+                        <td>Easy</td>
+                        <td>Normal</td>
+                        <td>Expert</td>
+                    </tr>
+                    <tr>
+                        <td>Level</td>
+                        <td id="song_level_easy">7</td>
+                        <td id="song_level_normal">13</td>
+                        <td id="song_level_hard">18</td>
+                        <td id="song_level_expert">25</td>
+                    </tr>
+                    <tr>
+                        <td>Notes</td>
+                        <td id="song_notes_easy">113</td>
+                        <td id="song_notes_normal">236</td>
+                        <td id="song_notes_hard">435</td>
+                        <td id="song_notes_expert">619</td>
+                    </tr>
+                    <tr>
+                        <td>Selection</td>
+                        <td>
+                            <input type="radio" name="song_diff_select" id="song_diff_select_easy" checked>
+                        </td>
+                        <td>
+                            <input type="radio" name="song_diff_select" id="song_diff_select_normal">
+                        </td>
+                        <td>
+                            <input type="radio" name="song_diff_select" id="song_diff_select_hard">
+                        </td>
+                        <td>
+                            <input type="radio" name="song_diff_select" id="song_diff_select_expert">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <button type="button" class="match_parent_width">Play!</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--Load script-->
+        <script type="text/javascript" src="scripts/bangbangboom-game.js"></script>
         <script type="text/javascript" src="scripts/platformOverrides.js"></script>
         <script type="text/javascript" src="scripts/index.js"></script>
     </body>
