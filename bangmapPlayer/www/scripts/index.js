@@ -13,11 +13,11 @@
         document.addEventListener( 'resume', onResume.bind( this ), false );
         
         // TODO: Cordova が読み込まれました。ここで、Cordova を必要とする初期化を実行します。
-        var parentElement = document.getElementById('deviceready');
+        /*var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
         listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        receivedElement.setAttribute('style', 'display:block;');*/
     };
 
     function onPause() {

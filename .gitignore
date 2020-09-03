@@ -617,3 +617,4 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,cordova,apachecordova,windows,android,visualstudio,visualstudiocode
+/bangmapPlayer/plugins
