@@ -31,7 +31,13 @@
 
             var infoFileName = songType + songId + "i.json";
             var songFileName = songType + songId + "b.mp3";
-            var mapFileName = songType + songId + "m.json";
+            var getMapFileName = function(diffNum){
+                if(diffNum === "0" || diffNum === "1" || diffNum === "2" || diffNum === "3"){
+                    return songType + songId + "m" + diffNum + ".json"
+                }else{
+                    throw new Error("System.ArgumentNullException; type of argument diffNum must be string expressing number");
+                }
+            };
 
             var settingSongInfoElement = document.getElementById("setting_songInfo_table");
             var songNameElement = document.getElementById("song_name");
@@ -86,6 +92,13 @@
                     }, function (error) {
                         var dataURL = "https://bestdori.com/api/songs/" + songId + ".json";
                         var bandURL = "https://bestdori.com/api/bands/all.1.json";
+                        var bgmURL = "https://bestdori.com/assets/jp/sound/bgm" + songId + "_rip/bgm" + songId + ".mp3";
+                        var mapURL = [
+                            "https://bestdori.com/api/songs/chart/" + songId + ".easy.json",
+                            "https://bestdori.com/api/songs/chart/" + songId + ".normal.json",
+                            "https://bestdori.com/api/songs/chart/" + songId + ".hard.json",
+                            "https://bestdori.com/api/songs/chart/" + songId + ".expert.json"
+                        ];
                         var data, band;
                         var xhrData = new XMLHttpRequest();
                         xhrData.open('GET', dataURL, true);
@@ -117,6 +130,8 @@
                                     entry.getFile(infoFileName, { create: true }, function (wFileEntry) {
                                         wFileEntry.createWriter(function (fileWriter) {
                                             fileWriter.onwriteend = function () {
+                                                var songBGMxhr = new XMLHttpRequest();
+                                                songBGMxhr.open('GET', )
                                                 loadInfo(wFileEntry);
                                             };
                                             fileWriter.onerror = function (e) {
