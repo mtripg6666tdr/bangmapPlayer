@@ -4,10 +4,6 @@
   <description>Apache Cordova を使用して、複数のモバイル プラットフォーム (Android、iOS、Windows ユニバーサル プラットフォーム) を対象とするアプリを構築するのを支援する空のプロジェクトです。</description>
   <author href="http://cordova.io" email="dev@cordova.apache.org">mtripg6666tdr</author>
   <vs:template-name>BlankJS</vs:template-name>
-  <vs:toolsetVersion>6.3.1</vs:toolsetVersion>
-  <engine name="android" spec="5.2.1" />
-  <engine name="ios" spec="4.2.0" />
-  <engine name="windows" spec="4.4.2" />
   <content src="index.html" />
   <access origin="*" />
   <preference name="SplashScreen" value="screen" />
@@ -108,4 +104,5 @@
   <preference name="android-minSdkVersion" value="21" />
   <plugin name="cordova-plugin-dialogs" spec="~2.0.2" />
   <plugin name="cordova-plugin-advanced-http" spec="~3.0.1" />
+  <plugin name="cordova-plugin-file" spec="~6.0.2" />
 </widget>
