@@ -23,6 +23,9 @@ body {
 .match_parent_width {
     width: 100%;
 }
+/*.match_parent_width * {
+    width: 100%;
+}*/
 table#setting_songInfo_table {
     display: none;
 }

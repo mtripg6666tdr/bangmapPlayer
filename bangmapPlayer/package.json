@@ -16,6 +16,12 @@
             "cordova-plugin-dialogs": {},
             "cordova-plugin-advanced-http": {},
             "cordova-plugin-file": {}
-        }
+        },
+        "platforms": [
+            "android"
+        ]
+    },
+    "scripts": {
+        "start:android:device": "cordova run android --device"
     }
 }

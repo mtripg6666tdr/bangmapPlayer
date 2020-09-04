@@ -21,17 +21,19 @@
         document.getElementsByClassName('app')[0].setAttribute('style', 'display:none;');
 
         var loadSongButton = document.getElementById('load_song');
-        loadSongButton.addEventListener('click', function(e){
+        console.log(loadSongButton);
+        loadSongButton.onclick = function(e){
             var songTypeElement = document.getElementById('song_type');
             var songIdElement = document.getElementById('song_id');
-            var songType = songTypeElement.getAttribute('value') === "official" ? "o" : "c";
-            var songId = songIdElement.getAttribute('value');
+            var songType = songTypeElement.value === "official" ? "o" : "c";
+            var songId = songIdElement.value;
+            var statusTextElement = document.getElementById("status_text");
 
             var infoFileName = songType + songId + "i.json";
             var songFileName = songType + songId + "b.mp3";
             var mapFileName = songType + songId + "m.json";
 
-            var settingSongInfoElement = document.getElementById("setting_songInfo");
+            var settingSongInfoElement = document.getElementById("setting_songInfo_table");
             var songNameElement = document.getElementById("song_name");
             var songBandElement = document.getElementById("song_band");
             var songLevelEasyElement = document.getElementById("song_level_easy");
@@ -70,7 +72,9 @@
                             songNotesHardElement.textContent = difficulties[2].notes;
                             songNotesExpertElement.textContent = difficulties[3].notes;
                             settingSongInfoElement.style.display = "block";
+                            statusTextElement.textContent = "Ready.";
                         };
+                        statusTextElement.textContent = "Loading specified song information from local cache...";
                         reader.readAsText(file);
                     }, function (error) {
 
@@ -88,11 +92,12 @@
                         xhrData.responseType = "json";
                         xhrData.onload = function () {
                             if (this.status == 200) {
-                                data = JSON.parse(this.response);
+                                data = this.response;
                                 var xhrBand = new XMLHttpRequest();
                                 xhrBand.open('GET', bandURL, true);
+                                xhrBand.responseType = "json";
                                 xhrBand.onload = function () {
-                                    band = JSON.parse(this.response);
+                                    band = this.response;
                                     var alldiffs = data.difficulty;
                                     var keys = Object.keys(alldiffs);
                                     var length = keys.length;
@@ -100,7 +105,7 @@
                                     for (var i = 0; i < length; i++) {
                                         var cKey = keys[i];
                                         filDiffs.push({
-                                            level: alldiffs[cKey][playLevel],
+                                            level: alldiffs[cKey]["playLevel"],
                                             notes: data.notes[cKey]
                                         });
                                     }
@@ -123,6 +128,7 @@
 
                                     });
                                 };
+                                statusTextElement.textContent = "Downloading band information...";
                                 xhrBand.send();
                             } else {
                                 window.navigator.notification.alert(
@@ -135,6 +141,7 @@
                                 );
                             }
                         };
+                        statusTextElement.textContent = "Downloading specified song information...";
                         xhrData.send();
                     })
                 }, function (error) {
@@ -148,7 +155,7 @@
                     )
                 });
             }
-        });
+        };
     };
 
     function onPause() {
