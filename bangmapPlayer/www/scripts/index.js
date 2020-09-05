@@ -4,6 +4,9 @@
 // 次に、JavaScript コンソールで "window.location.reload()" を実行します。
 /// <reference path="..\..\plugins\cordova-plugin-file\types\index.d.ts" />
 /// <reference path="..\..\plugins\cordova-plugin-dialogs\types\index.d.ts" />
+
+const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/build/intermediates/merged_assets/debug/out/www/plugins/cordova-plugin-file/www/FileError");
+
 (function () {
     "use strict";
 
@@ -130,9 +133,52 @@
                                     entry.getFile(infoFileName, { create: true }, function (wFileEntry) {
                                         wFileEntry.createWriter(function (fileWriter) {
                                             fileWriter.onwriteend = function () {
-                                                var songBGMxhr = new XMLHttpRequest();
-                                                songBGMxhr.open('GET', )
-                                                loadInfo(wFileEntry);
+                                                var BGMxhr = new XMLHttpRequest();
+                                                BGMxhr.open('GET', bgmURL);
+                                                BGMxhr.responseType = "blob";
+                                                BGMxhr.onload = function(){
+                                                    if(this.status === 200){
+                                                        var BGMblob = new Blob([this.response], {type: "audio/mpeg"});
+                                                        entry.getFile(songFileName, {create: true}, function(aFileEntry){
+                                                            aFileEntry.createWriter(function(aFileWriter){
+                                                                aFileWriter.onwriteend = function(){
+                                                                    var mapURLLength = mapURL.length;
+                                                                    statusTextElement.textContent = "Downloading map files...";
+                                                                    for(var i = 0; i < mapURLLength; i++) {
+                                                                        var mapXhr = new XMLHttpRequest();
+                                                                        mapXhr.open('GET', mapURL[i]);
+                                                                        mapXhr.responseType = "json";
+                                                                        mapXhr.onload = function(){
+                                                                            entry.getFile(getMapFileName(i.toString()), {create: true}, function(mFileEntry){
+                                                                                mFileEntry.createWriter(function(mFileWriter){
+                                                                                    mFileWriter.onwriteend = function(){
+                                                                                        console.log("Download file id " + i + "is completed.");
+                                                                                        statusTextElement.textContent = "Basic download is completed, but some tasks may still be running..."
+                                                                                    };
+                                                                                    mFileWriter.onerror = function(){
+                                                                                        console.log("Download file id " + i + " is failed.");
+                                                                                    };
+                                                                                    mFileWriter(new Blob([JSON.stringify(this.response)], {type: "text/plain"}));
+                                                                                });
+                                                                            }, function(){
+
+                                                                            });
+                                                                        };
+                                                                        mapXhr.send();
+                                                                    }
+                                                                };
+                                                                aFileWriter.onerror = function(){
+
+                                                                };
+                                                                aFileWriter.write(BGMblob);
+                                                            });
+                                                        }, function(){
+
+                                                        });
+                                                    }
+                                                };
+                                                statusTextElement.textContent = "Downloading specified song audio...";
+                                                BGMxhr.send();
                                             };
                                             fileWriter.onerror = function (e) {
 
