@@ -5,8 +5,6 @@
 /// <reference path="..\..\plugins\cordova-plugin-file\types\index.d.ts" />
 /// <reference path="..\..\plugins\cordova-plugin-dialogs\types\index.d.ts" />
 
-const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/build/intermediates/merged_assets/debug/out/www/plugins/cordova-plugin-file/www/FileError");
-
 (function () {
     "use strict";
 
@@ -25,7 +23,7 @@ const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/bui
 
         var loadSongButton = document.getElementById('load_song');
         console.log(loadSongButton);
-        loadSongButton.onclick = function(e){
+        loadSongButton.addEventListener("click" ,function(e){
             var songTypeElement = document.getElementById('song_type');
             var songIdElement = document.getElementById('song_id');
             var songType = songTypeElement.value === "official" ? "o" : "c";
@@ -81,6 +79,7 @@ const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/bui
                             songNotesHardElement.textContent = difficulties[2].notes;
                             songNotesExpertElement.textContent = difficulties[3].notes;
                             settingSongInfoElement.style.display = "block";
+                            settingSongInfoElement.dataset.sID = songId;
                             statusTextElement.textContent = "Ready.";
                         };
                         statusTextElement.textContent = "Loading specified song information from local cache...";
@@ -148,17 +147,20 @@ const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/bui
                                                                         var mapXhr = new XMLHttpRequest();
                                                                         mapXhr.open('GET', mapURL[i]);
                                                                         mapXhr.responseType = "json";
+                                                                        mapXhr.xID = i;
                                                                         mapXhr.onload = function(){
-                                                                            entry.getFile(getMapFileName(i.toString()), {create: true}, function(mFileEntry){
+                                                                            var mpStr = JSON.stringify(this.response)
+                                                                            var cID = this.xID;
+                                                                            entry.getFile(getMapFileName(this.xID.toString()), {create: true}, function(mFileEntry){
                                                                                 mFileEntry.createWriter(function(mFileWriter){
                                                                                     mFileWriter.onwriteend = function(){
-                                                                                        console.log("Download file id " + i + "is completed.");
+                                                                                        console.log("Download file id " + cID + "is completed.");
                                                                                         statusTextElement.textContent = "Basic download is completed, but some tasks may still be running..."
                                                                                     };
                                                                                     mFileWriter.onerror = function(){
-                                                                                        console.log("Download file id " + i + " is failed.");
+                                                                                        console.log("Download file id " + cID + " is failed.");
                                                                                     };
-                                                                                    mFileWriter(new Blob([JSON.stringify(this.response)], {type: "text/plain"}));
+                                                                                    mFileWriter.write(new Blob([mpStr], {type: "text/plain"}));
                                                                                 });
                                                                             }, function(){
 
@@ -166,6 +168,7 @@ const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/bui
                                                                         };
                                                                         mapXhr.send();
                                                                     }
+                                                                    loadInfo(wFileEntry);
                                                                 };
                                                                 aFileWriter.onerror = function(){
 
@@ -216,7 +219,115 @@ const { NO_MODIFICATION_ALLOWED_ERR } = require("../../platforms/android/app/bui
                     )
                 });
             }
-        };
+        });
+
+        var gamePlayButton = document.getElementById("game_play");
+        console.log(gamePlayButton);
+        gamePlayButton.addEventListener("click", function(e){
+            var songTypeElement = document.getElementById('song_type');
+            //var songIdElement = document.getElementById('song_id');
+            var songType = songTypeElement.value === "official" ? "o" : "c";
+
+            var settingSongInfoElement = document.getElementById("setting_songInfo_table");
+            var songNameElement = document.getElementById("song_name");
+            var songBandElement = document.getElementById("song_band");
+            
+            var selectedDiff = 
+                document.getElementById("song_diff_select_easy").checked ? "0" :
+                document.getElementById("song_diff_select_normal").checked ? "1" : 
+                document.getElementById("song_diff_select_hard").checked ? "2" :
+                document.getElementById("song_diff_select_expert").checked ? "3" : "-1";
+            var songId = settingSongInfoElement.dataset.sID;
+            var songFileName = songType + songId + "b.mp3";
+            var getMapFileName = function(diffNum){
+                if(diffNum === "0" || diffNum === "1" || diffNum === "2" || diffNum === "3"){
+                    return songType + songId + "m" + diffNum + ".json"
+                }else{
+                    throw new Error("System.ArgumentNullException; type of argument diffNum must be string expressing number");
+                }
+            };
+
+            if (songId == "") {
+                window.navigator.notification.alert(
+                    "Please type a correct ID",
+                    function () { },
+                    "Error",
+                    "OK"
+                );
+                return;
+            }
+
+            var mainMap, songURL;
+            
+            if(songType === "o"){
+                window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (entry) {
+                    entry.getFile(getMapFileName(selectedDiff), {create:false}, function(fileEntry){
+                        fileEntry.file(function(file){
+                            var reader = new FileReader();
+                            reader.onloadend = function(){
+                                mainMap = bestdori2bbb(JSON.parse(this.result));
+                                entry.getFile(songFileName, {create:false}, function(sFileEntry){
+                                    sFileEntry.file(function(sFile){
+                                        var sReader = new FileReader();
+                                        sReader.onloadend = function(){
+                                            songURL = this.result;
+
+                                            let GameConfig = {
+                                                judgeOffset: 20,
+                                                visualOffset: 10,
+                                                speed: 5.0,
+                                                resolution: 1,
+                                                noteScale: 1.2,
+                                                barOpacity: 0.7,
+                                                backgroundDim: 0.7,
+                                                effectVolume: 1,
+                                                showSimLine: true,
+                                                laneEffect: true,
+                                                mirror: false,
+                                                beatNote: true
+                                            };
+                                            let GameLoadConfig = {
+                                                mapContent: mainMap, // some function that loads the map content
+                                                musicSrc: songURL,
+                                                backgroundSrc: "/android_asset/www/assets/local/bg.jpg",
+                                                skin: "/android_asset/www/assets/skins",
+                                                songName: songNameElement.textContent  + " - " + songBandElement.textContent
+                                            };
+                                            function GameStart() {
+                                                const div = document.getElementById("app_game");
+                                                document.getElementById("setting_panel").style.display = "none";
+                                                const canvas = document.createElement("canvas");
+                                                canvas.style.height = "100%";
+                                                canvas.style.width = "100%";
+                                                div.appendChild(canvas);
+                                            
+                                                const game = new BangGame.Game(canvas, GameConfig, GameLoadConfig)
+                                                game.start();
+                                                game.ondestroyed = () => {
+                                                    div.removeChild(canvas);
+                                                    document.getElementById("setting_panel").style.display = "block";
+                                                };
+                                            };
+                                            GameStart();
+                                        };
+                                        sReader.readAsDataURL(sFile);
+                                    })
+                                }, function(e){
+
+                                });
+                            };
+                            reader.readAsText(file);
+                        }, function(e){
+
+                        })
+                    }, function(e){
+
+                    });
+                }, function(error){
+
+                });
+            }
+        });
     };
 
     function onPause() {
