@@ -1,1 +1,1 @@
-{"plugins":["cordova-plugin-whitelist","cordova-plugin-dialogs","cordova-plugin-file","cordova-plugin-advanced-http"]}
+{"plugins":["cordova-plugin-whitelist","cordova-plugin-dialogs","cordova-plugin-file","cordova-plugin-advanced-http","cordova-plugin-fullscreen","cordova-plugin-statusbar"]}

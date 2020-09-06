@@ -29,6 +29,8 @@
             var songType = songTypeElement.value === "official" ? "o" : "c";
             var songId = songIdElement.value;
             var statusTextElement = document.getElementById("status_text");
+            var mainProgressElement = document.getElementById("main_progress");
+            var mainProgressHolderElement = document.getElementById("main_progress_holder");
 
             var infoFileName = songType + songId + "i.json";
             var songFileName = songType + songId + "b.mp3";
@@ -61,6 +63,47 @@
                 );
                 return;
             }
+
+            var progressMessages = {
+                DownloadSongInfo: {
+                    text: "Downloading specified song information...",
+                    id: 0
+                },
+                DonwloadBandInfo: {
+                    text:"Downloading band information...",
+                    id: 1
+                },
+                DownloadSongAudio: {
+                    text:"Downloading specified song audio...",
+                    id: 2
+                },
+                StartMapDownload: {
+                    text:"Starting downloading map...",
+                    id: 3
+                },
+                EasyMapDownloadFinish: {
+                    text:"Finish downloading easy map",
+                    id: 4
+                },
+                NormalMapDownloadFinish: {
+                    text: "Finish downloading normal map",
+                    id: 5
+                },
+                HardMapDownloadFinish: {
+                    text: "Finish downloading hard map",
+                    id: 6
+                },
+                ExpertMapDownloadFinish: {
+                    text:"Ready",
+                    id:7
+                }
+            };
+            var progressChange = function(status_message){
+                mainProgressHolderElement.style.opacity = "1";
+                statusTextElement.textContent = status_message.text;
+                mainProgressElement.style.width = Math.floor((status_message.id + 1) / 8 * 100).toString() + "%";
+            };
+
             if (songType === "o") {
                 var loadInfo = function (fileEntry) {
                     fileEntry.file(function (file) {
@@ -80,7 +123,7 @@
                             songNotesExpertElement.textContent = difficulties[3].notes;
                             settingSongInfoElement.style.display = "block";
                             settingSongInfoElement.dataset.sID = songId;
-                            statusTextElement.textContent = "Ready.";
+                            statusTextElement.textContent = "Ready";
                         };
                         statusTextElement.textContent = "Loading specified song information from local cache...";
                         reader.readAsText(file);
@@ -142,7 +185,7 @@
                                                             aFileEntry.createWriter(function(aFileWriter){
                                                                 aFileWriter.onwriteend = function(){
                                                                     var mapURLLength = mapURL.length;
-                                                                    statusTextElement.textContent = "Downloading map files...";
+                                                                    progressChange(progressMessages.StartMapDownload);
                                                                     for(var i = 0; i < mapURLLength; i++) {
                                                                         var mapXhr = new XMLHttpRequest();
                                                                         mapXhr.open('GET', mapURL[i]);
@@ -155,7 +198,20 @@
                                                                                 mFileEntry.createWriter(function(mFileWriter){
                                                                                     mFileWriter.onwriteend = function(){
                                                                                         console.log("Download file id " + cID + "is completed.");
-                                                                                        statusTextElement.textContent = "Basic download is completed, but some tasks may still be running..."
+                                                                                        switch(cID){
+                                                                                            case 0:
+                                                                                                progressChange(progressMessages.EasyMapDownloadFinish);
+                                                                                                break;
+                                                                                            case 1:
+                                                                                                progressChange(progressMessages.NormalMapDownloadFinish);
+                                                                                                break;
+                                                                                            case 2:
+                                                                                                progressChange(progressMessages.HardMapDownloadFinish);
+                                                                                                break;
+                                                                                            case 3:
+                                                                                                progressChange(progressMessages.ExpertMapDownloadFinish);
+                                                                                                break;
+                                                                                        }
                                                                                     };
                                                                                     mFileWriter.onerror = function(){
                                                                                         console.log("Download file id " + cID + " is failed.");
@@ -180,7 +236,7 @@
                                                         });
                                                     }
                                                 };
-                                                statusTextElement.textContent = "Downloading specified song audio...";
+                                                progressChange(progressMessages.DownloadSongAudio);
                                                 BGMxhr.send();
                                             };
                                             fileWriter.onerror = function (e) {
@@ -192,7 +248,7 @@
 
                                     });
                                 };
-                                statusTextElement.textContent = "Downloading band information...";
+                                progressChange(progressMessages.DonwloadBandInfo)
                                 xhrBand.send();
                             } else {
                                 window.navigator.notification.alert(
@@ -205,7 +261,7 @@
                                 );
                             }
                         };
-                        statusTextElement.textContent = "Downloading specified song information...";
+                        progressChange(progressMessages.DownloadSongInfo);
                         xhrData.send();
                     })
                 }, function (error) {
@@ -225,7 +281,6 @@
         console.log(gamePlayButton);
         gamePlayButton.addEventListener("click", function(e){
             var songTypeElement = document.getElementById('song_type');
-            //var songIdElement = document.getElementById('song_id');
             var songType = songTypeElement.value === "official" ? "o" : "c";
 
             var settingSongInfoElement = document.getElementById("setting_songInfo_table");
@@ -258,7 +313,7 @@
             }
 
             var mainMap, songURL;
-            
+
             if(songType === "o"){
                 window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (entry) {
                     entry.getFile(getMapFileName(selectedDiff), {create:false}, function(fileEntry){

@@ -14,18 +14,43 @@ div.app {
 * {
     font-size: 110%;
 }
-div.app_game {
+div.app_game,
+table#setting_songInfo_table {
     display: none;
 }
 body {
     background-color: white;
 }
 .match_parent_width {
+    width: 96%;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+.match_parent_width_force {
     width: 100%;
 }
-/*.match_parent_width * {
+#status_text {
+    padding-left: 10px;
+}
+.status_text_holder {
+    border-radius: 5px;
+}
+div.vspace_3 {
+    height: 3px;
     width: 100%;
-}*/
-table#setting_songInfo_table {
+}
+#main_progress_holder {
+    opacity: 0;
+}
+#preference {
+    background-color: white;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    width: auto;
+    height: auto;
+    z-index: 20;
     display: none;
 }

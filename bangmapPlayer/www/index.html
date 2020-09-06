@@ -10,11 +10,25 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+        <link rel="stylesheet" type="text/css" href="css/material-icons.css">
+        <link rel="stylesheet" type="text/css" href="css/materialize.min.css" media="screen, projection">
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/main.css" />
         <title>bangmapPlayer</title>
     </head>
     <body>
+        <!--Top nav-->
+        <nav>
+            <div class="light-blue lighten-2 white-text z-depth-2 nav-wrapper">
+                <span class="brand-logo left">bangmapPlayer</span>
+                <ul class="right">
+                    <li><a href="" id="show_song_list"><i class="material-icons">view_list</i></a></li>
+                    <li><a href="" id="show_preference_panel"><i class="material-icons">settings</i></a></li>
+                    <li><a href="" id="show_information"><i class="material-icons">info</i></a></li>
+                </ul>
+            </div>
+        </nav>
+        <!--Cordova Prepare-->
         <div class="app">
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
@@ -26,17 +40,24 @@
         <!--Play Setting-->
         <div class="setting" id="setting_panel">
             <div class="setting_mainpanel">
-                <p class="match_parent_width">
-                    <select name="song_type" id="song_type">
+                <p class="match_parent_width input-field">
+                    <select name="song_type" id="song_type" class="browser-default">
                         <option value="official">Official</option>
                         <!--option value="community">Community</option-->
                     </select>
                     <input type="text" name="song_id" id="song_id" placeholder="Type ID of song..." />
                 </p>
-                <p class="match_parent_width">
-                    <button type="button" name="load_song" id="load_song" class="match_parent_width">Load selected song</button>
+                <p>
+                    <button type="button" name="load_song" id="load_song" class="match_parent_width waves-effect waves-light btn light-blue lighten-1">Load selected song</button>
                 </p>
-                <p class="match_parent_width" id="status_text">Ready</p>
+                <div class="black white-text match_parent_width status_text_holder">
+                    <div class="vspace_3"></div>
+                    <p class="match_parent_width" id="status_text">Ready</p>
+                    <div class="progress match_parent_width" id="main_progress_holder">
+                        <div class="determinate" style="width: 70%" data-prog="0" id="main_progress"></div>
+                    </div>
+                    <div class="vspace_3"></div>
+                </div>
             </div>
             <div class="setting_songInfo" id="setting_songInfo">
                 <table class="match_parent_width" id="setting_songInfo_table">
@@ -72,24 +93,124 @@
                     <tr>
                         <td>Selection</td>
                         <td>
-                            <input type="radio" name="song_diff_select" id="song_diff_select_easy" checked>
+                            <label>
+                                <input type="radio" name="song_diff_select" id="song_diff_select_easy" class="with-gap" checked>
+                                <span></span>
+                            </label>
                         </td>
                         <td>
-                            <input type="radio" name="song_diff_select" id="song_diff_select_normal">
+                            <label>
+                                <input type="radio" name="song_diff_select" id="song_diff_select_normal" class="with-gap">
+                                <span></span>
+                            </label>
                         </td>
                         <td>
-                            <input type="radio" name="song_diff_select" id="song_diff_select_hard">
+                            <label>
+                                <input type="radio" name="song_diff_select" id="song_diff_select_hard" class="with-gap">
+                                <span></span>
+                            </label>
                         </td>
                         <td>
-                            <input type="radio" name="song_diff_select" id="song_diff_select_expert">
+                            <label>
+                                <input type="radio" name="song_diff_select" id="song_diff_select_expert" class="with-gap">
+                                <span></span>
+                            </label>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <button type="button" class="match_parent_width" id="game_play">Play!</button>
+                            <button type="button" class="match_parent_width_force waves-effect waves-light btn light-blue lighten-1" id="game_play"><i class="material-icons">play_circle_filled</i>&nbsp;<i>Play!</i></button>
                         </td>
                     </tr>
                 </table>
+            </div>
+        </div>
+        <!--Preference Panel-->
+        <div id="preference">
+            <nav>
+                <div class="nav-wrapper">
+                    <span class="brand-logo left">Preferences</span>
+                </div>
+            </nav>
+            <div class="note_speed_div">
+                <p>Note Speed</p>
+                <p class="input-field">
+                    <input type="text" id="note_speed" readonly>
+                    <button type="button" id="note_speed_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="note_speed_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="note_size_div">
+                <p>Note Size</p>
+                <p class="input-field">
+                    <input type="text" id="note_size" readonly>
+                    <button type="button" id="note_size_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="note_size_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="judge_offset_div">
+                <p>Judge Offset</p>
+                <p class="input-field">
+                    <input type="text" id="judge_offset" readonly>
+                    <button type="button" id="judge_offset_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="judge_offset_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="visual_offset_div">
+                <p>Visual Offset</p>
+                <p class="input-field">
+                    <input type="text" id="visual_offset" readonly>
+                    <button type="button" id="judge_offset_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="judge_offset_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="long_note_transparency_div">
+                <p>Long Note Transparency</p>
+                <p class="input-field">
+                    <input type="text" id="long_note_transparency" readonly>
+                    <button type="button" id="long_note_transparency_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="long_note_transparency_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="note_se_volume_div">
+                <p>Note SE Volume</p>
+                <p class="input-field">
+                    <input type="text" id="note_se_volume" readonly>
+                    <button type="button" id="note_se_volume_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="note_se_volume_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="dual_tap_line_div">
+                <p>Dual Tap Line</p>
+                <p class="input-field">
+                    <input type="text" id="dual_tap_line" readonly>
+                    <button type="button" id="dual_tap_line_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="dual_tap_line_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="off_beat_coloring_div">
+                <p>Off-Beat Coloring</p>
+                <p class="input-field">
+                    <input type="text" id="off_beat_coloring" readonly>
+                    <button type="button" id="off_beat_coloring_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="off_beat_coloring_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="mirror_div">
+                <p>Mirror</p>
+                <p class="input-field">
+                    <input type="text" id="mirror" readonly>
+                    <button type="button" id="mirror_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="mirror_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
+            </div>
+            <div class="lane_effects_div">
+                <p>Lane Effects</p>
+                <p class="input-field">
+                    <input type="text" id="lane_effects" readonly>
+                    <button type="button" id="lane_effects_increase" class="waves-effect waves-light btn light-blue lighten-1">+</button>
+                    <button type="button" id="lane_effects_decrease" class="waves-effect waves-light btn light-blue lighten-1">-</button>
+                </p>
             </div>
         </div>
         <!--Load script-->
@@ -98,5 +219,6 @@
         <script type="text/javascript" src="scripts/platformOverrides.js"></script>
         <script type="text/javascript" src="scripts/index.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/materialize.min.js"></script>
     </body>
 </html>
