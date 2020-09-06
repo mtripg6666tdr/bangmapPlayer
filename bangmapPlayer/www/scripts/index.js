@@ -273,26 +273,34 @@
                                             songURL = this.result;
 
                                             let GameConfig = {
-                                                judgeOffset: 20,
-                                                visualOffset: 10,
-                                                speed: 5.0,
-                                                resolution: 1,
-                                                noteScale: 1.2,
-                                                barOpacity: 0.7,
                                                 backgroundDim: 0.7,
-                                                effectVolume: 1,
-                                                showSimLine: true,
-                                                laneEffect: true,
+                                                barOpacity: 0.8,
+                                                beatNote: false,
+                                                effectVolume: 0.7,
+                                                judgeOffset: 0,
+                                                laneEffect: false,
                                                 mirror: false,
-                                                beatNote: true
+                                                noteScale: 1.2,
+                                                resolution: 1,
+                                                //GameConfig.resolution = GameConfig.resolution ? 2 : 1;
+                                                showSimLine: true,
+                                                speed: 5.0,
+                                                visualOffset: 0
                                             };
                                             let GameLoadConfig = {
-                                                mapContent: mainMap, // some function that loads the map content
+                                                mapSrc: URL.createObjectURL(new Blob([mainMap])), // some function that loads the map content
                                                 musicSrc: songURL,
                                                 backgroundSrc: "/android_asset/www/assets/local/bg.jpg",
                                                 skin: "/android_asset/www/assets/skins",
-                                                songName: songNameElement.textContent  + " - " + songBandElement.textContent
+                                                songName: songNameElement.textContent  + " - " + songBandElement.textContent,
+                                                loadingMessages: ["Loading", "Powered by bangbangboom"]
                                             };
+    // musicSrc = ""
+    // mapSrc = ""
+    // backgroundSrc = ""
+    // skin = ""
+    // songName = ""
+    // loadingMessages?: string[]
                                             function GameStart() {
                                                 const div = document.getElementById("app_game");
                                                 document.getElementById("setting_panel").style.display = "none";
@@ -300,6 +308,7 @@
                                                 canvas.style.height = "100%";
                                                 canvas.style.width = "100%";
                                                 div.appendChild(canvas);
+                                                div.style.display = "block";
                                             
                                                 const game = new BangGame.Game(canvas, GameConfig, GameLoadConfig)
                                                 game.start();
