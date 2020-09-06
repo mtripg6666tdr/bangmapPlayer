@@ -359,17 +359,19 @@
                                             function GameStart() {
                                                 const div = document.getElementById("app_game");
                                                 document.getElementById("setting_panel").style.display = "none";
+                                                document.getElementsByTagName("nav")[0].style.display = "none";
                                                 const canvas = document.createElement("canvas");
                                                 canvas.style.height = "100%";
                                                 canvas.style.width = "100%";
                                                 div.appendChild(canvas);
                                                 div.style.display = "block";
                                             
-                                                const game = new BangGame.Game(canvas, GameConfig, GameLoadConfig)
+                                                const game = new BangGame.Game(canvas, GameConfig, GameLoadConfig);
                                                 game.start();
                                                 game.ondestroyed = () => {
                                                     div.removeChild(canvas);
                                                     document.getElementById("setting_panel").style.display = "block";
+                                                    document.getElementsByTagName("nav")[0].style.display = "block";
                                                 };
                                             };
                                             GameStart();
@@ -415,6 +417,10 @@
                 "App Info",
                 "OK"
             )
+        });
+
+        document.getElementById("show_song_list").addEventListener("click", function(){
+            
         });
     };
 
