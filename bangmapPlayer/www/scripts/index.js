@@ -400,6 +400,22 @@
                 AndroidFullScreen.isSupported(AndroidFullScreen.immersiveMode, errorFunction); 
             } 
         });
+
+        document.getElementById("show_information").addEventListener("click", function(){
+            window.navigator.notification.alert(
+                "bangmapPlayer (" + window.navigator.appVersion + ") by mtripg6666tdr (mtripg6666tdr@outlook.com)\r\n" +
+                "GitHub: https://github.com/mtripg6666tdr/bangmapPlayer\r\n" +
+                "LICENSE NOTICE\r\n" + 
+                "This application contains a package or plugin distributed under MIT License\r\n" +
+                "bangbangboom-game: https://github.com/K024/bangbangboom-game  (MIT License) \r\n" + 
+                "BanGround Player:  https://github.com/zz5840/BanGround-Player (No License)\r\n" + 
+                "Materialize:       https://materializecss.com/                (MIT License)"
+                ,
+                ()=>{},
+                "App Info",
+                "OK"
+            )
+        });
     };
 
     function onPause() {
