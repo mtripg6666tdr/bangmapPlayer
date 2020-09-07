@@ -1,3 +1,5 @@
+\* **NOTICE** This repo is now developing.
+
 # bangmapPlayer
 Bangmap Player: Let's play bang map even you're offline by cache downloaded in advance.
 
