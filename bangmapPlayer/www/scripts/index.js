@@ -5,6 +5,12 @@
 /// <reference path="..\..\plugins\cordova-plugin-file\types\index.d.ts" />
 /// <reference path="..\..\plugins\cordova-plugin-dialogs\types\index.d.ts" />
 
+const { parse } = require("../../platforms/android/app/build/intermediates/merged_assets/debug/out/www/plugins/cordova-plugin-advanced-http/www/umd-tough-cookie");
+
+//Global Variables
+const LS_PREFERENCE_KEY = "preference_setting";
+//End
+
 (function () {
     "use strict";
 
@@ -327,21 +333,25 @@
                                         sReader.onloadend = function(){
                                             songURL = this.result;
 
-                                            let GameConfig = {
-                                                backgroundDim: 0.7,
-                                                barOpacity: 0.8,
-                                                beatNote: false,
-                                                effectVolume: 0.7,
-                                                judgeOffset: 0,
-                                                laneEffect: false,
-                                                mirror: false,
-                                                noteScale: 1.2,
-                                                resolution: 1,
-                                                //GameConfig.resolution = GameConfig.resolution ? 2 : 1;
-                                                showSimLine: true,
-                                                speed: 5.0,
-                                                visualOffset: 0
-                                            };
+                                            let GameConfig = JSON.parse(window.localStorage.getItem(LS_PREFERENCE_KEY));
+                                            if(GameConfig === null){
+                                                GameConfig = {
+                                                    backgroundDim: 0.7,
+                                                    barOpacity: 0.8,
+                                                    beatNote: false,
+                                                    effectVolume: 0.7,
+                                                    judgeOffset: 0,
+                                                    laneEffect: false,
+                                                    mirror: false,
+                                                    noteScale: 1.2,
+                                                    resolution: false,
+                                                    //GameConfig.resolution = GameConfig.resolution ? 2 : 1;
+                                                    showSimLine: true,
+                                                    speed: 5.0,
+                                                    visualOffset: 0
+                                                };
+                                            }
+                                            GameConfig.resolution = GameConfig.resolution ? 2 : 1;
                                             let GameLoadConfig = {
                                                 mapSrc: URL.createObjectURL(new Blob([mainMap])), // some function that loads the map content
                                                 musicSrc: songURL,
@@ -411,7 +421,7 @@
                 "This application contains a package or plugin distributed under MIT License\r\n" +
                 "bangbangboom-game: https://github.com/K024/bangbangboom-game  (MIT License) \r\n" + 
                 "BanGround Player:  https://github.com/zz5840/BanGround-Player (No License)\r\n" + 
-                "Materialize:       https://materializecss.com/                (MIT License)"
+                "MaterializeCSS:    https://materializecss.com/                (MIT License)"
                 ,
                 ()=>{},
                 "App Info",
@@ -420,7 +430,72 @@
         });
 
         document.getElementById("show_song_list").addEventListener("click", function(){
-            
+            var setting = JSON.parse(window.localStorage.getItem(LS_PREFERENCE_KEY));
+            if(setting === null){
+                setting = {
+                    //ノーツの速度
+                    speed: 5.0,
+                    //ノーツの大きさ
+                    noteScale: 1.0,
+                    //判定調節
+                    judgeOffset: 0,
+                    //譜面調節
+                    visualOffset: 0,
+                    //ロングノーツの透明度
+                    barOpacity: 0.8,
+                    //SE音量
+                    effectVolume: 0.7,
+                    //同時押しライン
+                    showSimLine: true,
+                    //リズムサポート
+                    beatNote: false,
+                    //ミラー
+                    mirror: false,
+                    //レーンエフェクト
+                    laneEffect: false,
+                    //高画質
+                    resolution: false,
+                    //背景の透明度
+                    backgroundDim: 0.7
+                };
+            }
+            var setVal = function(id, val){
+                document.getElementById(id).value = val;
+            };
+            setVal("note_speed", setting.speed);
+            setVal("note_size",  setting.noteScale);
+            setVal("judge_offset", setting.judgeOffset);
+            setVal("visual_offset", setting.visualOffset);
+            setVal("long_note_transparency", setting.barOpacity);
+            setVal("note_se_volume", setting.effectVolume);
+            setVal("dual_tap_line", setting.showSimLine);
+            setVal("off_beat_coloring", setting.beatNote);
+            setVal("mirror", setting.mirror);
+            setVal("lane_effects", setting.laneEffect);
+            setVal("high_quality", setting.resolution);
+        });
+
+        document.getElementById("preference_save").addEventListener("click", function(){
+            const setting = {};
+            const parseBool = function(str){
+                if(str === "true" || str === true){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+            setting.speed = parseFloat(document.getElementById("note_speed").value);
+            setting.noteScale = parseFloat(document.getElementById("note_size").value);
+            setting.judgeOffset = parseFloat(document.getElementById("judge_offset").value);
+            setting.visualOffset = parseFloat(document.getElementById("visual_offset").value);
+            setting.barOpacity = parseFloat(document.getElementById("long_note_transparency").value);
+            setting.effectVolume = parseFloat(document.getElementById("note_se_volume").value);
+            setting.showSimLine = parseBool(document.getElementById("dual_tap_line").value);
+            setting.beatNote = parseBool(document.getElementById("beatNote").value);
+            setting.mirror = parseBool(document.getElementById("mirror").value);
+            setting.laneEffect = parseBool(document.getElementById("lane_effects").value);
+            setting.resolution = parseBool(document.getElementById("high_quality").value);
+            window.localStorage.setItem(LS_PREFERENCE_KEY, JSON.stringify(setting));
         });
     };
 

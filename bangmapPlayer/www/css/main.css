@@ -52,5 +52,9 @@ div.vspace_3 {
     width: auto;
     height: auto;
     z-index: 20;
-    display: none;
+    /*display: none;*/
+    overflow-y: scroll;
+}
+.decrease_button, .increase_button {
+    font-size: 180%;
 }
