@@ -1,10 +1,11 @@
 ﻿/*
-// bangmapPlayer Stylesheet
-// @author:     mtripg6666tdr
-// @homepage:   https://scrpg.tyanoyu.net/
-// @Twitter:    @mtripg6666tdr
-// @GitHub:     @mtripg6666tdr
-// @Created By: VisualStudio 2017, Brackets
+/! bangmapPlayer Stylesheet
+/!
+/! @author:     mtripg6666tdr
+/! @homepage:   https://scrpg.tyanoyu.net/
+/! @Twitter:    @mtripg6666tdr
+/! @GitHub:     @mtripg6666tdr
+/! @Created By: VisualStudio 2017, Brackets
 */
 /* !Start Stylesheet for Debug */
 div.app {
@@ -42,7 +43,7 @@ div.vspace_3 {
 #main_progress_holder {
     opacity: 0;
 }
-#preference {
+#preference, #info_panel {
     background-color: white;
     position: fixed;
     top: 0px;
@@ -51,9 +52,14 @@ div.vspace_3 {
     left: 0px;
     width: auto;
     height: auto;
-    z-index: 20;
-    /*display: none;*/
     overflow-y: scroll;
+    display: none;
+}
+#preference {
+    z-index: 20;
+}
+#info_panel {
+    z-index: 21;
 }
 .decrease_button, .increase_button {
     font-size: 180%;

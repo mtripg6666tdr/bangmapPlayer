@@ -22,9 +22,9 @@
             <div class="light-blue lighten-2 white-text z-depth-2 nav-wrapper">
                 <span class="brand-logo left">bangmapPlayer</span>
                 <ul class="right">
-                    <li><a href="" id="show_song_list"><i class="material-icons">view_list</i></a></li>
-                    <li><a href="" id="show_preference_panel"><i class="material-icons">settings</i></a></li>
-                    <li><a href="" id="show_information"><i class="material-icons">info</i></a></li>
+                    <li><a href="" id="show_song_list"        onclick="return false;"><i class="material-icons">view_list</i></a></li>
+                    <li><a href="" id="show_preference_panel" onclick="return false;"><i class="material-icons">settings</i> </a></li>
+                    <li><a href="" id="show_information"      onclick="return false;"><i class="material-icons">info</i>     </a></li>
                 </ul>
             </div>
         </nav>
@@ -119,7 +119,7 @@
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <button type="button" class="match_parent_width_force waves-effect waves-light btn light-blue lighten-1" id="game_play"><i class="material-icons">play_circle_filled</i>&nbsp;<i>Play!</i></button>
+                            <button type="button" class="match_parent_width_force waves-effect waves-light btn light-blue lighten-1" id="game_play"><i class="material-icons" onclick="return false;">play_circle_filled</i>&nbsp;<i>Play!</i></button>
                         </td>
                     </tr>
                 </table>
@@ -130,6 +130,9 @@
             <nav>
                 <div class="nav-wrapper">
                     <span class="brand-logo left">Preferences</span>
+                    <ul class="right">
+                        <li><a href="" class="close_preference_button" id="close_preference_button" onclick="return false;"><i class="material-icons">close</i></a></li>
+                    </ul>
                 </div>
             </nav>
             <div class="note_speed_div match_parent_width">
@@ -233,7 +236,7 @@
                 </p>
             </div>
             <div class="high_quality_div match_parent_width">
-                <p>Lane Effects</p>
+                <p>High Quality</p>
                 <p>
                     <div class="input-field inline">
                         <input type="text" id="high_quality" readonly>
@@ -245,6 +248,58 @@
             <div class="preference_save_div match_parent_width">
                 <p>Click 'save' button to save your preference.</p>
                 <button type="button" class="waves-effect waves-light btn match_parent_width_force" id="preference_save">Save</button>
+            </div>
+        </div>
+        <!--Information Panel-->
+        <div id="info_panel">
+            <nav>
+                <div class="nav-wrapper">
+                    <span class="brand-logo left">bangmapPlayer</span>
+                    <ul class="right">
+                        <li><a href="" class="close_infoPanel_button" id="close_infoPanel_button" onclick="return false;"><i class="material-icons">close</i></a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="match_parent_width">
+                <h1 class="left">App info.</h1><br>
+                <div id="appinfo_holder">
+                    <h3>bangmapPlayer (<span id="app_ver"></span>) by mtripg6666tdr (mtripg6666tdr@outlook.com)</h3>
+                    <p>GitHub:&nbsp;<a href="https://github.com/mtripg6666tdr/bangmapPlayer">mtripg6666tdr/bangmapPlayer</a></p>
+                    <h4>LICENSE NOTICE</h4>
+                    <p>This application contains a package or plugin distributed under MIT License. See the below table to learn more.</p>
+                    <table  class="match_parent_width">
+                        <thead>
+                            <tr>
+                                <td>Repo/project name</td>
+                                <td>Repo/project link</td>
+                                <td>License</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>bangbangboom-game</td>
+                                <td>
+                                    <a href="https://github.com/K024/bangbangboom-game">K024/bangbangboom-game</a>
+                                </td>
+                                <td>MIT License</td>
+                            </tr>
+                            <tr>
+                                <td>BanGround Player</td>
+                                <td>
+                                    <a href="https://github.com/zz5840/BanGround-Player">zz5840/BanGround-Player</a>
+                                </td>
+                                <td>No license</td>
+                            </tr>
+                            <tr>
+                                <td>MaterializeCSS</td>
+                                <td>
+                                    <a href="https://materializecss.com/">MaterializeCSS</a>
+                                </td>
+                                <td>MIT License</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <!--Load script-->

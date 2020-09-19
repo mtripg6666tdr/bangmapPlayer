@@ -5,8 +5,6 @@
 /// <reference path="..\..\plugins\cordova-plugin-file\types\index.d.ts" />
 /// <reference path="..\..\plugins\cordova-plugin-dialogs\types\index.d.ts" />
 
-const { parse } = require("../../platforms/android/app/build/intermediates/merged_assets/debug/out/www/plugins/cordova-plugin-advanced-http/www/umd-tough-cookie");
-
 //Global Variables
 const LS_PREFERENCE_KEY = "preference_setting";
 //End
@@ -407,29 +405,22 @@ const LS_PREFERENCE_KEY = "preference_setting";
 
         document.getElementById("song_id").addEventListener("blur", function(){
             StatusBar.hide(); 
-            if (typeof AndroidFullScreen !== 'undefined') { // Fullscreen plugin exists ? 
+            if (typeof AndroidFullScreen !== 'undefined' && typeof AndroidFullScreen.isSupported !== 'undefined') { // Fullscreen plugin exists ? 
                 function errorFunction(error) { console.error(error); } 
                 AndroidFullScreen.isSupported(AndroidFullScreen.immersiveMode, errorFunction); 
             } 
         });
 
         document.getElementById("show_information").addEventListener("click", function(){
-            window.navigator.notification.alert(
-                "bangmapPlayer (" + window.navigator.appVersion + ") by mtripg6666tdr (mtripg6666tdr@outlook.com)\r\n" +
-                "GitHub: https://github.com/mtripg6666tdr/bangmapPlayer\r\n" +
-                "LICENSE NOTICE\r\n" + 
-                "This application contains a package or plugin distributed under MIT License\r\n" +
-                "bangbangboom-game: https://github.com/K024/bangbangboom-game  (MIT License) \r\n" + 
-                "BanGround Player:  https://github.com/zz5840/BanGround-Player (No License)\r\n" + 
-                "MaterializeCSS:    https://materializecss.com/                (MIT License)"
-                ,
-                ()=>{},
-                "App Info",
-                "OK"
-            )
+            cordova.getAppVersion.getVersionNumber(function(appver){
+                document.getElementById("app_ver").textContent = appver;
+            }, function(error){
+
+            });
+            document.getElementById("info_panel").style.display = "block";
         });
 
-        document.getElementById("show_song_list").addEventListener("click", function(){
+        document.getElementById("show_preference_panel").addEventListener("click", function(){
             var setting = JSON.parse(window.localStorage.getItem(LS_PREFERENCE_KEY));
             if(setting === null){
                 setting = {
@@ -461,6 +452,14 @@ const LS_PREFERENCE_KEY = "preference_setting";
             }
             var setVal = function(id, val){
                 document.getElementById(id).value = val;
+                var inE = document.getElementById(id + "_increase");
+                inE.addEventListener("click", onPreferenceChangeButtonClicked);
+                inE.dataset.forID = id;
+                inE.dataset.editType = "i";
+                var deE = document.getElementById(id + "_decrease");
+                deE.addEventListener("click", onPreferenceChangeButtonClicked);
+                deE.dataset.forID = id;
+                deE.dataset.editType = "d";
             };
             setVal("note_speed", setting.speed);
             setVal("note_size",  setting.noteScale);
@@ -473,6 +472,8 @@ const LS_PREFERENCE_KEY = "preference_setting";
             setVal("mirror", setting.mirror);
             setVal("lane_effects", setting.laneEffect);
             setVal("high_quality", setting.resolution);
+            document.getElementById("preference").style.display = "block";
+            return false;
         });
 
         document.getElementById("preference_save").addEventListener("click", function(){
@@ -491,12 +492,46 @@ const LS_PREFERENCE_KEY = "preference_setting";
             setting.barOpacity = parseFloat(document.getElementById("long_note_transparency").value);
             setting.effectVolume = parseFloat(document.getElementById("note_se_volume").value);
             setting.showSimLine = parseBool(document.getElementById("dual_tap_line").value);
-            setting.beatNote = parseBool(document.getElementById("beatNote").value);
+            setting.beatNote = parseBool(document.getElementById("off_beat_coloring").value);
             setting.mirror = parseBool(document.getElementById("mirror").value);
             setting.laneEffect = parseBool(document.getElementById("lane_effects").value);
             setting.resolution = parseBool(document.getElementById("high_quality").value);
             window.localStorage.setItem(LS_PREFERENCE_KEY, JSON.stringify(setting));
+            document.getElementById("preference").style.display = "none";
+            return false;
         });
+
+        document.getElementById("close_preference_button").addEventListener("click", function(){
+            document.getElementById("preference").style.display = "none";
+            return false;
+        });
+
+        document.getElementById("close_infoPanel_button").addEventListener("click", function(){
+            document.getElementById("info_panel").style.display = "none";
+            return false;
+        })
+    };
+
+    var onPreferenceChangeButtonClicked = function(){
+        var target = document.getElementById(this.dataset.forID);
+        switch(target.value){
+            case "true":
+                target.value = "false";
+                break;
+            case "false":
+                target.value = "true";
+                break;
+            default:
+                switch(this.dataset.editType){
+                    case "i":
+                        target.value = ((parseFloat(target.value) * 10) + 1) / 10;
+                        break;
+                    case "d":
+                        target.value = ((parseFloat(target.value) * 10) - 1) / 10;
+                        break;
+                }
+                break;
+        }
     };
 
     function onPause() {
