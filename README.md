@@ -13,11 +13,13 @@ Apache Cordova
 1. Add platform by command `cordova platform add <platform name>`
 1. Build by command `cordova build <platform name>`
 
-# Development loadmap
-- Setting panel
-- Rich info panel
+# Development roadmap
 - Favorite map feature
-- Cached map list
+- Song list
+  - Listing and managing already downloaded maps and no already
+## Already have implemented
+- ~~Setting panel~~
+- ~~Rich info panel~~
 
 # License
 MIT License  
