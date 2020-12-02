@@ -1,4 +1,5 @@
 \* **NOTICE** This repo is now developing.
+\* **NOTICE** This repo's source code contains a callback hell.
 
 # bangmapPlayer
 Bangmap Player: Let's play bang map even you're offline by cache downloaded in advance.
