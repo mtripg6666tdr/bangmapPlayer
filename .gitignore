@@ -4,5 +4,5 @@ bundle.js
 **/bin
 *.user
 **/node_modules
-**/plugins/*
+plugins/*
 !**/plugins/bangbangboom-game-remixed
