@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "sourceMap": false,
+        "target": "ES3",
+        "module": "CommonJS",
+        "noImplicitAny": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true
+    }
+}
