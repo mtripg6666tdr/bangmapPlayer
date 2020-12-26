@@ -4,7 +4,8 @@
     "private": true,
     "dependencies": {
         "bangbangboom-editor": "github:K024/bangbangboom-editor",
-        "bangbangboom-game-remixed": "file:../plugins/bangbangboom-game-remixed"
+        "bangbangboom-game-remixed": "file:../plugins/bangbangboom-game-remixed",
+        "spin.js": "^4.1.0"
     },
     "devDependencies": {
         "cordova-android": "^9.0.0",
