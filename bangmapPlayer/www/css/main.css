@@ -1,22 +1,12 @@
-﻿/*
-/! bangmapPlayer Stylesheet
-/!
-/! @author:     mtripg6666tdr
-/! @homepage:   https://scrpg.tyanoyu.net/
-/! @Twitter:    @mtripg6666tdr
-/! @GitHub:     @mtripg6666tdr
-/! @Created By: VisualStudio 2017, Brackets
-*/
-/* !Start Stylesheet for Debug */
+﻿/* !Start Stylesheet for Debug */
 div.app {
     display: none;
 }
 /* !End Stylesheet for Debug */
 * {
-    font-size: 110%;
+    font-size: 100%;
 }
-div.app_game,
-table#setting_songInfo_table {
+div.app_game, table#setting_songInfo_table {
     display: none;
 }
 body {
@@ -63,4 +53,25 @@ div.vspace_3 {
 }
 .decrease_button, .increase_button {
     font-size: 180%;
+}
+div.setting_songInfo {
+    overflow: scroll;
+}
+div#setting_panel {
+    width:50%;
+    border-right: 1px solid black;
+    overflow-y: scroll;
+}
+div.setting{
+    display: inline-block;
+    width:49%;
+    height: calc(100vh - 64px);
+    vertical-align: top;
+}
+div.ss_container div.ss_title {
+    text-align: center;
+}
+div.ss_container div.ss_list {
+    width: 100%;
+    overflow-y: scroll;
 }

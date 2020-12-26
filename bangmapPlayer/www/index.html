@@ -22,7 +22,6 @@
             <div class="light-blue lighten-2 white-text z-depth-2 nav-wrapper">
                 <span class="brand-logo left">bangmapPlayer</span>
                 <ul class="right">
-                    <li><a href="" id="show_song_list"        onclick="return false;"><i class="material-icons">view_list</i></a></li>
                     <li><a href="" id="show_preference_panel" onclick="return false;"><i class="material-icons">settings</i> </a></li>
                     <li><a href="" id="show_information"      onclick="return false;"><i class="material-icons">info</i>     </a></li>
                 </ul>
@@ -38,91 +37,116 @@
         <!--Map Player-->
         <div class="app_game" id="app_game"></div>
         <!--Play Setting-->
-        <div class="setting" id="setting_panel">
-            <div class="setting_mainpanel">
-                <p class="match_parent_width input-field">
-                    <select name="song_type" id="song_type" class="browser-default">
-                        <option value="official">Official</option>
-                        <!--option value="community">Community</option-->
-                    </select>
-                    <input type="text" name="song_id" id="song_id" placeholder="Type ID of song..." />
-                </p>
-                <p>
-                    <button type="button" name="load_song" id="load_song" class="match_parent_width waves-effect waves-light btn light-blue lighten-1">Load selected song</button>
-                </p>
-                <div class="black white-text match_parent_width status_text_holder">
-                    <div class="vspace_3"></div>
-                    <p class="match_parent_width" id="status_text">Ready</p>
-                    <div class="progress match_parent_width" id="main_progress_holder">
-                        <div class="determinate" style="width: 70%" data-prog="0" id="main_progress"></div>
+        <div id="setting_panels_container">
+            <div class="setting" id="setting_panel">
+                <div class="setting_mainpanel">
+                    <p class="match_parent_width input-field">
+                        <select name="song_type" id="song_type" class="browser-default">
+                            <option value="official">Official</option>
+                            <!--option value="community">Community</option-->
+                        </select>
+                        <input type="text" name="song_id" id="song_id" placeholder="Type ID of song..." />
+                    </p>
+                    <p>
+                        <button type="button" name="load_song" id="load_song" class="match_parent_width waves-effect waves-light btn light-blue lighten-1">Load selected song</button>
+                    </p>
+                    <div class="match_parent_width status_text_holder">
+                        <div class="vspace_3"></div>
+                        <div class="progress match_parent_width" id="main_progress_holder">
+                            <div class="determinate" style="width: 70%" data-prog="0" id="main_progress"></div>
+                        </div>
+                        <div class="vspace_3"></div>
                     </div>
-                    <div class="vspace_3"></div>
+                </div>
+                <div class="setting_songInfo" id="setting_songInfo">
+                    <table class="match_parent_width" id="setting_songInfo_table">
+                        <tr>
+                            <td>Title</td>
+                            <td colspan="4" id="song_name">約束</td>
+                        </tr>
+                        <tr>
+                            <td>Band</td>
+                            <td colspan="4" id="song_band">Roselia</td>
+                        </tr>
+                        <tr>
+                            <td>Difficulty</td>
+                            <td>Easy</td>
+                            <td>Normal</td>
+                            <td>Hard</td>
+                            <td>Expert</td>
+                        </tr>
+                        <tr>
+                            <td>Level</td>
+                            <td id="song_level_easy">7</td>
+                            <td id="song_level_normal">13</td>
+                            <td id="song_level_hard">18</td>
+                            <td id="song_level_expert">25</td>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <td id="song_notes_easy">113</td>
+                            <td id="song_notes_normal">236</td>
+                            <td id="song_notes_hard">435</td>
+                            <td id="song_notes_expert">619</td>
+                        </tr>
+                        <tr>
+                            <td>Selection</td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="song_diff_select" id="song_diff_select_easy" class="with-gap" checked>
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="song_diff_select" id="song_diff_select_normal" class="with-gap">
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="song_diff_select" id="song_diff_select_hard" class="with-gap">
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="song_diff_select" id="song_diff_select_expert" class="with-gap">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <button type="button" class="match_parent_width_force waves-effect waves-light btn light-blue lighten-1" id="game_play"><i class="material-icons" onclick="return false;">play_circle_filled</i>&nbsp;<i>Play!</i></button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="setting_songInfo" id="setting_songInfo">
-                <table class="match_parent_width" id="setting_songInfo_table">
-                    <tr>
-                        <td>Title</td>
-                        <td colspan="4" id="song_name">約束</td>
-                    </tr>
-                    <tr>
-                        <td>Band</td>
-                        <td colspan="4" id="song_band">Roselia</td>
-                    </tr>
-                    <tr>
-                        <td>Difficulty</td>
-                        <td>Easy</td>
-                        <td>Normal</td>
-                        <td>Hard</td>
-                        <td>Expert</td>
-                    </tr>
-                    <tr>
-                        <td>Level</td>
-                        <td id="song_level_easy">7</td>
-                        <td id="song_level_normal">13</td>
-                        <td id="song_level_hard">18</td>
-                        <td id="song_level_expert">25</td>
-                    </tr>
-                    <tr>
-                        <td>Notes</td>
-                        <td id="song_notes_easy">113</td>
-                        <td id="song_notes_normal">236</td>
-                        <td id="song_notes_hard">435</td>
-                        <td id="song_notes_expert">619</td>
-                    </tr>
-                    <tr>
-                        <td>Selection</td>
-                        <td>
-                            <label>
-                                <input type="radio" name="song_diff_select" id="song_diff_select_easy" class="with-gap" checked>
-                                <span></span>
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="radio" name="song_diff_select" id="song_diff_select_normal" class="with-gap">
-                                <span></span>
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="radio" name="song_diff_select" id="song_diff_select_hard" class="with-gap">
-                                <span></span>
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="radio" name="song_diff_select" id="song_diff_select_expert" class="with-gap">
-                                <span></span>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">
-                            <button type="button" class="match_parent_width_force waves-effect waves-light btn light-blue lighten-1" id="game_play"><i class="material-icons" onclick="return false;">play_circle_filled</i>&nbsp;<i>Play!</i></button>
-                        </td>
-                    </tr>
-                </table>
+            <div class="setting ss_container" id="song_selection_panel">
+                <div class="ss_title ss_child">
+                    <p>Song list</p>
+                </div>
+                <div class="ss_nav ss_child">
+                    <label>
+                        <input type="radio" name="category" value="all">
+                        <span>All</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="category" value="history">
+                        <span>History</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="category" value="favorite">
+                        <span>Favorite</span>
+                    </label>
+                    <br>
+                    <select class="browser-default">
+                        <option>Filter by band name...</option>
+                    </select>
+                </div>
+                <div class="ss_child ss_list"></div>
             </div>
         </div>
         <!--Preference Panel-->
@@ -303,7 +327,7 @@
             </div>
         </div>
         <!--Load script-->
-        <script type="text/javascript" src="scripts/bangbangboom-game.js"></script>
+        <!--script type="text/javascript" src="scripts/bangbangboom-game.js"></script-->
         <script type="text/javascript" src="scripts/bestdori2bbb.js"></script>
         <script type="text/javascript" src="scripts/platformOverrides.js"></script>
         <!--script type="text/javascript" src="scripts/index.js"></script-->
