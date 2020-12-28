@@ -5,13 +5,15 @@ module.exports = {
     entry: path.join(__dirname, "./src/index.ts"),
     output: {
         filename: "bundle.js",
-        path: path.join(__dirname, "./www/scripts/")
+        path: path.join(__dirname, "./www/scripts/"),
+        library: "bangMapApp",
+        libraryTarget: "var",
+        libraryExport: "default"
     },
     module: {
         rules: [
             {
                 test: /\.ts/,
-                exclude: /node_modules/,
                 use: "ts-loader"
             }
         ]

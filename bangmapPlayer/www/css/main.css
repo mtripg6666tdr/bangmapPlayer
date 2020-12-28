@@ -1,9 +1,4 @@
-﻿/* !Start Stylesheet for Debug */
-div.app {
-    display: none;
-}
-/* !End Stylesheet for Debug */
-* {
+﻿* {
     font-size: 100%;
 }
 div.app_game, table#setting_songInfo_table {
