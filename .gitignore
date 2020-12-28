@@ -1,0 +1,8 @@
+bundle.js
+**/typings
+**/.vs
+**/bin
+*.user
+**/node_modules
+plugins/*
+!**/plugins/bangbangboom-game-remixed
