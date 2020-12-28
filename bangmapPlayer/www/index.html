@@ -62,11 +62,11 @@
                     <table class="match_parent_width" id="setting_songInfo_table">
                         <tr>
                             <td>Title</td>
-                            <td colspan="4" id="song_name">約束</td>
+                            <td colspan="5" id="song_name">約束</td>
                         </tr>
                         <tr>
                             <td>Band</td>
-                            <td colspan="4" id="song_band">Roselia</td>
+                            <td colspan="5" id="song_band">Roselia</td>
                         </tr>
                         <tr>
                             <td>Difficulty</td>
@@ -74,6 +74,7 @@
                             <td>Normal</td>
                             <td>Hard</td>
                             <td>Expert</td>
+                            <td id="song_level_special_title">Special</td>
                         </tr>
                         <tr>
                             <td>Level</td>
@@ -81,6 +82,7 @@
                             <td id="song_level_normal">13</td>
                             <td id="song_level_hard">18</td>
                             <td id="song_level_expert">25</td>
+                            <td id="song_level_special">30</td>
                         </tr>
                         <tr>
                             <td>Notes</td>
@@ -88,6 +90,7 @@
                             <td id="song_notes_normal">236</td>
                             <td id="song_notes_hard">435</td>
                             <td id="song_notes_expert">619</td>
+                            <td id="song_notes_special">720</td>
                         </tr>
                         <tr>
                             <td>Selection</td>
@@ -115,9 +118,15 @@
                                     <span></span>
                                 </label>
                             </td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="song_diff_select" id="song_diff_select_special" class="with-gap">
+                                    <span></span>
+                                </label>
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <button type="button" class="match_parent_width_force waves-effect waves-light btn light-blue lighten-1" id="game_play"><i class="material-icons" onclick="return false;">play_circle_filled</i>&nbsp;<i>Play!</i></button>
                             </td>
                         </tr>
@@ -130,15 +139,15 @@
                 </div>
                 <div class="ss_nav ss_child">
                     <label>
-                        <input type="radio" name="category" value="all" checked>
+                        <input type="radio" name="category" value="all" class="with-gap" checked>
                         <span>All</span>
                     </label>
                     <label>
-                        <input type="radio" name="category" value="history">
+                        <input type="radio" name="category" class="with-gap" value="history">
                         <span>History</span>
                     </label>
                     <label>
-                        <input type="radio" name="category" value="favorite">
+                        <input type="radio" name="category" class="with-gap" value="favorite">
                         <span>Favorite</span>
                     </label>
                     <br>
