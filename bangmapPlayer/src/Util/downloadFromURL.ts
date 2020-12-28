@@ -1,23 +1,16 @@
-export type donwloadOptions = {
-    type?: "text"|"json"|"blob"|"arraybuffer",
-    method?: "GET"|"POST",
-    payload?: string|object
-}
+type XMLHttpRequestResponseType = "" | "arraybuffer" | "blob" | "document" | "json" | "text";
 
-export function downloadFromURL(url:string, option?:donwloadOptions){
-    return new Promise<string|Blob|ArrayBuffer>((resolve,reject)=>{
-        if(typeof option === "undefined"){
-            option = {};
-        }
+export function downloadFromURL(url:string,type:XMLHttpRequestResponseType){
+    return new Promise((resolve,reject)=>{
         const xhr = new XMLHttpRequest();
-        xhr.open(option.method ?? "GET", url);
-        xhr.responseType = option.type ?? "text";
+        xhr.open("GET",url);
+        xhr.responseType = type;
         xhr.onload = function(){
             resolve(xhr.response);
         };
         xhr.onerror = function(ev){
             reject(ev);
         };
-        xhr.send(typeof option.payload === "string" ? option.payload : JSON.stringify(option.payload));
+        xhr.send();
     });
 }

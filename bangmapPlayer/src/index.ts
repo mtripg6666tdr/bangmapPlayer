@@ -1,6 +1,8 @@
 import {CacheManager} from "./Common/CacheManager";
 import {setFullScreen} from "./Util/setFullScreen";
 import {isConnected} from "./Util/isInternetAvailable";
+import { downloadFromURL } from "./Util/downloadFromURL";
+import { ApiInfo } from "./Core/ApiInfo";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
@@ -37,8 +39,9 @@ export default class bangMapApp {
         this.init();
     }
 
-    private init(){
+    private async init(){
         if(isConnected()){
+            const api = (await downloadFromURL("https://raw.githubusercontent.com/mtripg6666tdr/bangmapPlayer/apiinfo/apiinfo.json","json")) as ApiInfo;
             
         }
     }
