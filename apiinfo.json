@@ -1,5 +1,5 @@
 {
-    "allSongInfo":"https://bestdori.com/api/songs/all.1.json",
+    "allSongInfo":"https://bestdori.com/api/songs/all.5.json",
     "songInfo":"https://bestdori.com/api/songs/{num}.json",
     "bandInfo":"https://bestdori.com/api/bands/all.1.json",
     "songBin":"https://bestdori.com/assets/jp/sound/bgm{num}_rip/bgm{num}.mp3",
