@@ -54,3 +54,13 @@ export class FileUtil {
         });
     }
 }
+
+export function resolveLocalFileSystemURL_s(url:string){
+    return new Promise<DirectoryEntry>((resolve, reject) => {
+        window.resolveLocalFileSystemURL(url, function(e_0_){
+            resolve(e_0_ as DirectoryEntry);
+        }, function(error){
+            reject(error);
+        })
+    });
+}
