@@ -141,7 +141,7 @@ const LS_PREFERENCE_KEY = "preference_setting";
                     }, function (error) {
                         var dataURL = "https://bestdori.com/api/songs/" + songId + ".json";
                         var bandURL = "https://bestdori.com/api/bands/all.1.json";
-                        var bgmURL = "https://bestdori.com/assets/jp/sound/bgm" + songId + "_rip/bgm" + songId + ".mp3";
+                        var bgmURL = "https://bestdori.com/assets/jp/sound/bgm" + (songId.length === 1 ? "00" + songId : songId.length === 2 ? "0" + songId : songId) + "_rip/bgm" + (songId.length === 1 ? "00" + songId : songId.length === 2 ? "0" + songId : songId) + ".mp3";
                         var mapURL = [
                             "https://bestdori.com/api/songs/chart/" + songId + ".easy.json",
                             "https://bestdori.com/api/songs/chart/" + songId + ".normal.json",
