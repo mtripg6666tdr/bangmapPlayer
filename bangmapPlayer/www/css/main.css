@@ -1,7 +1,7 @@
 ﻿* {
     font-size: 100%;
 }
-div.app_game, table#setting_songInfo_table {
+div.app_game, div#setting_songInfo {
     display: none;
 }
 body {
