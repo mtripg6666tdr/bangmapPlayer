@@ -1,3 +1,5 @@
+import { SongID } from "../Core/SongInfo";
+
 export class FileUtil {
     directoryEntry:DirectoryEntry;
     fileName:string;

@@ -1,4 +1,6 @@
 export type DifficultyInfos = {[key in "Easy"|"Normal"|"Hard"|"Expert"|"Special"]:number};
+export type BandID = number;
+export type SongID = number;
 
 export type SongInfo ={
     Title:string,
@@ -9,7 +11,7 @@ export type SongInfo ={
 export type BestdoriAllSongInfo = {
     [key:number]:{
         tag:string,
-        bandId:number,
+        bandId:BandID,
         jacketImage:[string],
         musicTitle:[string,string,string,string,string],
         publishedAt:[string,string,string,string,string],

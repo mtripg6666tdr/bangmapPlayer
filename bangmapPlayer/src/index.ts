@@ -5,8 +5,9 @@ import { downloadFromURL } from "./Util/downloadFromURL";
 import { ApiInfo } from "./Core/ApiInfo";
 import { FileName } from "./Core/FileName";
 import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
-import { BestdoriAllBandInfo, BestdoriAllSongInfo, SongInfo } from "./Core/SongInfo";
+import { BestdoriAllBandInfo, BestdoriAllSongInfo, SongID, SongInfo } from "./Core/SongInfo";
 import { ConvertFromBestdori } from "./Util/SongInfoConverter";
+import { SongListManager } from "./Common/SongListManager";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
@@ -25,6 +26,9 @@ export default class bangMapApp {
     private apiInfo: ApiInfo;
     private dataDirectory:DirectoryEntry;
     private isOnline: boolean;
+    private downloadedList: SongListManager;
+    private historyList: SongListManager;
+    private favoriteList: SongListManager;
 
     constructor(){
         this.Elements = {
@@ -75,5 +79,10 @@ export default class bangMapApp {
                 // Can't run app; need network in first launch
             }
         }
+
+        // get each list
+        this.downloadedList = await new SongListManager(this.dataDirectory, FileName.downloadedSongInfo).init();
+        this.historyList = await new SongListManager(this.dataDirectory, FileName.historyInfo).init();
+        this.favoriteList = await new SongListManager(this.dataDirectory, FileName.favoritesInfo).init();
     }
 }
