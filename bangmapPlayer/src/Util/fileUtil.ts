@@ -1,11 +1,12 @@
-import { SongID } from "../Core/SongInfo";
+import { UtilBase } from "./UtilBase";
 
-export class FileUtil {
+export class FileUtil extends UtilBase {
     directoryEntry:DirectoryEntry;
     fileName:string;
     private fileEntry:FileEntry
 
     constructor(entry:DirectoryEntry, filename:string){
+        super();
         this.directoryEntry = entry;
         this.fileName = filename;
         this.fileEntry = null;

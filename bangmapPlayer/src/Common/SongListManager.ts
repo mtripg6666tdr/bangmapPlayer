@@ -1,7 +1,8 @@
 import { SongID } from "../Core/SongInfo";
 import { FileUtil } from "../Util/fileUtil";
+import { AsyncConstructor, Manager } from "./CommonBase";
 
-export class SongListManager{
+export class SongListManager extends Manager implements AsyncConstructor{
     SongList:SongID[];
     initialized:boolean;
 
@@ -9,6 +10,7 @@ export class SongListManager{
     private fileName:string;
 
     constructor (directory:DirectoryEntry, filename:string){
+        super();
         this.directory = directory;
         this.fileName = filename;
     }
@@ -19,7 +21,7 @@ export class SongListManager{
         return this;
     }
 
-    async getSongIDfromFile(): Promise<SongID[]>{
+    private async getSongIDfromFile(): Promise<SongID[]>{
         try{
             const file = new FileUtil(this.directory, this.fileName);
             if(file.exists()){
