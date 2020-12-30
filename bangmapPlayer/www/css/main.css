@@ -66,7 +66,12 @@ div.setting{
 div.ss_container div.ss_title {
     text-align: center;
 }
-div.ss_container div.ss_list {
+div.ss_container div.ss_list_parent {
     width: 100%;
     overflow-y: scroll;
+}
+div.ss_container div.ss_list_parent div#songlist_dl,
+div.ss_container div.ss_list_parent div#songlist_history,
+div.ss_container div.ss_list_parent div#songlist_favorite {
+    display: none;
 }

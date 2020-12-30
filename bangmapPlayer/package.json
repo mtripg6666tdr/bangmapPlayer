@@ -35,11 +35,12 @@
             "cordova-plugin-network-information": {}
         },
         "platforms": [
-            "android",
-            "browser"
+            "browser",
+            "android"
         ]
     },
     "scripts": {
+        "start": "npm run start:android:device:debug",
         "start:android:device:debug": "npm run build:debug && cordova run android --device",
         "start:android:device:release": "npm run build:release && cordova run android --device",
         "build:debug": "webpack --config ./webpack.config.dev.js",

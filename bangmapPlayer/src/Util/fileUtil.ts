@@ -52,7 +52,7 @@ export class FileUtil extends UtilBase {
                 this.fileEntry = entry;
                 resolve(true);
             }, function(){
-                reject(false);
+                resolve(false);
             })
         });
     }

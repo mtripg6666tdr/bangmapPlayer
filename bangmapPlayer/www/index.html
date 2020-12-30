@@ -139,15 +139,19 @@
                 </div>
                 <div class="ss_nav ss_child">
                     <label>
-                        <input type="radio" name="category" value="all" class="with-gap" checked>
+                        <input type="radio" name="category" value="all" id="filter_all" class="with-gap" checked>
                         <span>All</span>
                     </label>
                     <label>
-                        <input type="radio" name="category" class="with-gap" value="history">
+                        <input type="radio" name="category" value="downloaded" id="filter_dl" class="with-gap">
+                        <span>Downloaded</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="category" class="with-gap" id="filter_history" value="history">
                         <span>History</span>
                     </label>
                     <label>
-                        <input type="radio" name="category" class="with-gap" value="favorite">
+                        <input type="radio" name="category" class="with-gap" id="filter_favorite" value="favorite">
                         <span>Favorite</span>
                     </label>
                     <br>
@@ -155,7 +159,12 @@
                         <option>Filter by band name...</option>
                     </select>
                 </div>
-                <div class="ss_child ss_list"></div>
+                <div class="ss_child ss_list_parent">
+                    <div class="ss_child_child ss_list" id="songlist_all"></div>
+                    <div class="ss_child_child ss_list" id="songlist_dl"></div>
+                    <div class="ss_child_child ss_list" id="songlist_history"></div>
+                    <div class="ss_child_child ss_list" id="songlist_favorite"></div> 
+                </div>
             </div>
         </div>
         <!--Preference Panel-->
