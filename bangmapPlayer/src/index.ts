@@ -7,7 +7,7 @@ import { FileName } from "./Core/FileName";
 import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
 import { BestdoriAllBandInfo, BestdoriAllSongInfo, SongID, SongInfo } from "./Core/SongInfo";
 import { ConvertFromBestdori } from "./Util/SongInfoConverter";
-import { LocalSongIDListManager } from "./Common/SongListManager";
+import { LocalSongIDListManager } from "./Common/LocalSongIDListManager";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
