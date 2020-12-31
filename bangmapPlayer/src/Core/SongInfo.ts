@@ -1,4 +1,5 @@
-export type DifficultyInfos = {[key in "Easy"|"Normal"|"Hard"|"Expert"|"Special"]:number};
+export type DifficultyNames = "Easy"|"Normal"|"Hard"|"Expert"|"Special";
+export type DifficultyInfos = {[key in DifficultyNames]:number};
 export type BandID = number;
 export type SongID = number;
 

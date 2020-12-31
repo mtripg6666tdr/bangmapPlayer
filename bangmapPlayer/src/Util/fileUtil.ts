@@ -30,6 +30,25 @@ export class FileUtil extends UtilBase {
         });
     }
 
+    writeBinary(data:Blob){
+        return new Promise<void>((resolve,reject) => {
+            this.directoryEntry.getFile(this.fileName, {create:true}, function(fileEntry){
+                fileEntry.createWriter(function(filewriter){
+                    filewriter.onwriteend = function(){
+                        resolve();
+                    };
+                    filewriter.onerror = function(error){
+                        reject(error);
+                    }
+                    filewriter.write(data);
+                })
+            }, function(error){
+                reject(error);
+            })
+        });
+    }
+
+
     readText(){
         return new Promise<string>(async (resolve,reject) => {
             if(await this.exists()){
@@ -39,6 +58,25 @@ export class FileUtil extends UtilBase {
                     }, function(error){
                         reject(error);
                     })
+                })
+            }else{
+                reject("Target file was not found");
+            }
+        });
+    }
+
+    readBinary(){
+        return new Promise<string>(async (resolve,reject) => {
+            if(await this.exists()){
+                this.fileEntry.file(function(file){
+                    const reader = new FileReader();
+                    reader.onloadend = function(){
+                        resolve(this.result as string);
+                    }
+                    reader.onerror = function(e){
+                        reject(e);
+                    }
+                    reader.readAsDataURL(file);
                 })
             }else{
                 reject("Target file was not found");

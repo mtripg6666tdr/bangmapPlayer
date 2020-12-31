@@ -171,6 +171,7 @@ export default class bangMapApp {
         this.Elements.showPrefButton.addEventListener("click", () => this.onPreferenceButtonClick());
         this.Elements.showInfoButton.addEventListener("click", () => this.onInfoButtonClick());
         this.Elements.closeInfoButton.addEventListener("click", () => this.onCloseInfoButtonClick());
+        this.Elements.loadSongButton.addEventListener("click", ()=> this.onLoadSongButtonClick());
     }
 
     private onSonglistRadioFilterChanged(){
@@ -196,10 +197,19 @@ export default class bangMapApp {
     }
 
     private onInfoButtonClick(){
+        cordova.getAppVersion.getVersionNumber(function(appver){
+            document.getElementById("app_ver").textContent = appver;
+        }, function(error){
+
+        });
         this.Elements.panel_info.style.display = "block";
     }
     
     private onCloseInfoButtonClick(){
         this.Elements.panel_info.style.display = "none";
+    }
+
+    private onLoadSongButtonClick(){
+
     }
 }
