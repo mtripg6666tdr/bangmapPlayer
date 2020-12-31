@@ -1,11 +1,11 @@
-export interface CommonBase {
+export interface ICommonBase {
 
 }
 export interface AsyncConstructor {
     initialized:boolean;
     init():Promise<AsyncConstructor>
 }
-export class CommonBase implements CommonBase {
+export class CommonBase implements ICommonBase {
     protected constructor(){
     }
 }
@@ -21,5 +21,17 @@ export class DataManager extends Manager {
 
     save(){
         
+    }
+
+    get():any{
+        
+    }
+}
+export class Adapter extends CommonBase {
+    protected constructor(){
+        super();
+    };
+    Update():any{
+
     }
 }

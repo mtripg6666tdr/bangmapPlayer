@@ -26,6 +26,10 @@ export class LocalSongIDListManager extends DataManager implements AsyncConstruc
         file.writeText(JSON.stringify(this.SongList))
     }
 
+    get(){
+        return this.SongList;
+    }
+
     private async getSongIDfromFile(): Promise<SongID[]>{
         try{
             const file = new FileUtil(this.directory, this.fileName);

@@ -14,9 +14,14 @@
         <link rel="stylesheet" type="text/css" href="css/materialize.min.css" media="screen, projection">
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/spin.css" />
         <title>bangmapPlayer</title>
     </head>
     <body>
+        <!--Spinner-->
+        <div class="spinner_back" id="spinner_back">
+            <div class="spinner" id="spinner"></div>
+        </div>
         <!--Top nav-->
         <nav>
             <div class="light-blue lighten-2 white-text z-depth-2 nav-wrapper">
@@ -155,12 +160,24 @@
                         <span>Favorite</span>
                     </label>
                     <br>
-                    <select class="browser-default">
+                    <select class="browser-default" id="filter_band">
                         <option>Filter by band name...</option>
                     </select>
                 </div>
                 <div class="ss_child ss_list_parent">
-                    <div class="ss_child_child ss_list" id="songlist_all"></div>
+                    <div class="ss_child_child ss_list" id="songlist_all">
+                        <div class="songCard">
+                            <p class="songCard_title">Ringing Bloom</p>
+                            <p class="songCard_band">Roselia</p>
+                            <p class="songCard_levels">
+                                <span class="songCard_levels_easy">8</span>
+                                <span class="songCard_levels_normal">15</span>
+                                <span class="songCard_levels_hard">21</span>
+                                <span class="songCard_levels_expert">28</span>
+                                <span class="songCard_levels_special">27</span>
+                            </p>
+                        </div>
+                    </div>
                     <div class="ss_child_child ss_list" id="songlist_dl"></div>
                     <div class="ss_child_child ss_list" id="songlist_history"></div>
                     <div class="ss_child_child ss_list" id="songlist_favorite"></div> 
@@ -181,7 +198,7 @@
                 <p>Note Speed</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="note_speed" readonly>
+                        <input type="text" id="note_speed" data-min="1" data-max="11" data-step="0.1" data-largeStep="0.5" data-suffix="" data-scale="1" readonly>
                     </div>
                     <button type="button" id="note_speed_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="note_speed_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -191,7 +208,7 @@
                 <p>Note Size</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="note_size" readonly>
+                        <input type="text" id="note_size" data-min="10" data-max="200" data-step="10" data-largeStep="50" data-suffix="%" data-scale="0.01" readonly>
                     </div>
                     <button type="button" id="note_size_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="note_size_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -201,7 +218,7 @@
                 <p>Judge Offset</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="judge_offset" readonly>
+                        <input type="text" id="judge_offset" data-min="infinity" data-max="infinity" data-step="10" data-largeStep="50" data-suffix="" data-scale="0.001" readonly>
                     </div>
                     <button type="button" id="judge_offset_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="judge_offset_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -211,7 +228,7 @@
                 <p>Visual Offset</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="visual_offset" readonly>
+                        <input type="text" id="visual_offset" data-min="infinity" data-max="inifinity" data-step="10"  data-largeStep="50" data-suffix="" data-scale="0.001" readonly>
                     </div>
                     <button type="button" id="visual_offset_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="visual_offset_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -221,7 +238,7 @@
                 <p>Long Note Transparency</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="long_note_transparency" readonly>
+                        <input type="text" id="long_note_transparency" data-min="20" data-max="100" data-step="5" data-largeStep="10" data-suffix="%" data-scale="0.01" readonly>
                     </div>
                     <button type="button" id="long_note_transparency_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="long_note_transparency_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -231,7 +248,7 @@
                 <p>Note SE Volume</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="note_se_volume" readonly>
+                        <input type="text" id="note_se_volume" data-min="0" data-max="100" data-step="5" data-largeStep="10" data-suffix="%" data-scale="0.01" readonly>
                     </div>                    
                     <button type="button" id="note_se_volume_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="note_se_volume_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -241,7 +258,18 @@
                 <p>Dual Tap Line</p>
                 <p>
                     <div class="input-field inline">
-                        <input type="text" id="dual_tap_line" readonly>
+                        <input type="text" id="dual_tap_line" data-min="0" data-max="100" data-step="5" data-largeStep="10" data-suffix="%" data-scale="0.01" readonly>
+                    </div>
+                    <button type="button" id="dual_tap_line_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
+                    <button type="button" id="dual_tap_line_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
+                </p>
+            </div>
+            <div class="high_quality_div match_parent_width">
+                <p>High Quality</p>
+                <p>
+                    <div class="input-field inline">
+                        <!--default: 1.2-->
+                        <input type="text" id="high_quality" data-min="0.2" data-max="4" data-step="0.05" data-largeStep="0.5" data-suffix="" data-scale="1" readonly>
                     </div>
                     <button type="button" id="dual_tap_line_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
                     <button type="button" id="dual_tap_line_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
@@ -250,41 +278,28 @@
             <div class="off_beat_coloring_div match_parent_width">
                 <p>Off-Beat Coloring</p>
                 <p>
-                    <div class="input-field inline">
-                        <input type="text" id="off_beat_coloring" readonly>
-                    </div>
-                    <button type="button" id="off_beat_coloring_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
-                    <button type="button" id="off_beat_coloring_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
+                    <label>
+                        <input type="checkbox" class="filled-in" id="off_beat_coloring">
+                        <span></span>
+                    </lbel>
                 </p>
             </div>
             <div class="mirror_div match_parent_width">
                 <p>Mirror</p>
                 <p>
-                    <div class="input-field inline">
-                        <input type="text" id="mirror" readonly>
-                    </div>
-                    <button type="button" id="mirror_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
-                    <button type="button" id="mirror_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
+                    <label>
+                        <input type="checkbox" id="mirror">
+                        <span></span>
+                    </label>
                 </p>
             </div>
             <div class="lane_effects_div match_parent_width">
                 <p>Lane Effects</p>
                 <p>
-                    <div class="input-field inline">
-                        <input type="text" id="lane_effects" readonly>
-                    </div>
-                    <button type="button" id="lane_effects_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
-                    <button type="button" id="lane_effects_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
-                </p>
-            </div>
-            <div class="high_quality_div match_parent_width">
-                <p>High Quality</p>
-                <p>
-                    <div class="input-field inline">
-                        <input type="text" id="high_quality" readonly>
-                    </div>
-                    <button type="button" id="high_quality_increase" class="waves-effect waves-light btn light-blue lighten-1 increase_button">+</button>
-                    <button type="button" id="high_quality_decrease" class="waves-effect waves-light btn light-blue lighten-1 decrease_button">-</button>
+                    <label>
+                        <input type="checkbox" id="lane_effects" readonly>
+                        <span></span>
+                    </label>
                 </p>
             </div>
             <div class="preference_save_div match_parent_width">
@@ -308,39 +323,7 @@
                     <h3>bangmapPlayer (<span id="app_ver"></span>) by mtripg6666tdr (mtripg6666tdr@outlook.com)</h3>
                     <p>GitHub:&nbsp;<a href="https://github.com/mtripg6666tdr/bangmapPlayer">mtripg6666tdr/bangmapPlayer</a></p>
                     <h4>LICENSE NOTICE</h4>
-                    <p>This application contains a package or plugin distributed under MIT License. See the below table to learn more.</p>
-                    <table  class="match_parent_width">
-                        <thead>
-                            <tr>
-                                <td>Repo/project name</td>
-                                <td>Repo/project link</td>
-                                <td>License</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>bangbangboom-game</td>
-                                <td>
-                                    <a href="https://github.com/K024/bangbangboom-game">K024/bangbangboom-game</a>
-                                </td>
-                                <td>MIT License</td>
-                            </tr>
-                            <tr>
-                                <td>BanGround Player</td>
-                                <td>
-                                    <a href="https://github.com/zz5840/BanGround-Player">zz5840/BanGround-Player</a>
-                                </td>
-                                <td>No license</td>
-                            </tr>
-                            <tr>
-                                <td>MaterializeCSS</td>
-                                <td>
-                                    <a href="https://materializecss.com/">MaterializeCSS</a>
-                                </td>
-                                <td>MIT License</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p>This application contains some OSSs. Please learn more about them in GitHub repo.</p>
                 </div>
             </div>
         </div>

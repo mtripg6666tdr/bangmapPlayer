@@ -6,6 +6,7 @@ div.app_game, div#setting_songInfo {
 }
 body {
     background-color: white;
+    max-height: 100vh;
 }
 .match_parent_width {
     width: 96%;
@@ -66,12 +67,95 @@ div.setting{
 div.ss_container div.ss_title {
     text-align: center;
 }
+div.ss_container {
+    position: relative;
+    top: 0;
+    bottom: 0;
+}
 div.ss_container div.ss_list_parent {
     width: 100%;
     overflow-y: scroll;
+    position:relative;
+    bottom: 0;
+    top: 0;
+    display: block;
+    max-height: 75vh;
+}
+div.ss_container div.ss_list_parent div#songlist_all,
+div.ss_container div.ss_list_parent div#songlist_dl,
+div.ss_container div.ss_list_parent div#songlist_history,
+div.ss_container div.ss_list_parent div#songlist_favorite {
+    width: 100%;
+    margin-top: 10px;
+    padding-right: 3px;
+    padding-left: 3px;
 }
 div.ss_container div.ss_list_parent div#songlist_dl,
 div.ss_container div.ss_list_parent div#songlist_history,
 div.ss_container div.ss_list_parent div#songlist_favorite {
     display: none;
+}
+div.ss_list div.songCard {
+    border: 1px solid gray;
+    border-radius: 7px;
+    width: 100%;
+    transition: 300ms;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+div.ss_list div.songCard:hover {
+    background-color: rgba(0,0,0,0.1);
+    transition: 300ms;
+}
+div.ss_list div.songCard p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+div.ss_list div.songCard p.songCard_title {
+    font-size: 120%;
+}
+div.ss_list div.songCard p.songCard_band {
+    font-size: 98%;
+    text-indent: 1em;
+}
+div.ss_list div.songCard p.songCard_levels span {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+}
+div.ss_list div.songCard p.songCard_levels span.songCard_levels_easy {
+    background-color: #3076f8;
+}
+div.ss_list div.songCard p.songCard_levels span.songCard_levels_normal {
+    background-color: #188a28;
+}
+div.ss_list div.songCard p.songCard_levels span.songCard_levels_hard {
+    background-color: #d1861a;
+}
+div.ss_list div.songCard p.songCard_levels span.songCard_levels_expert {
+    background-color: #fd2a30;
+}
+div.ss_list div.songCard p.songCard_levels span.songCard_levels_special {
+    background-color: #f1279c;
+}
+div.spinner_back {
+    position: fixed;
+    z-index: 999999;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+div.spinner_back div.spinner {
+    position: fixed;
+    z-index: 1000000;
+    width: 30%;
+    height: 30%;
+    top: 35%;
+    left: 35%;
 }

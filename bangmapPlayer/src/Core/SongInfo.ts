@@ -3,6 +3,10 @@ export type BandID = number;
 export type SongID = number;
 
 export type SongInfo ={
+    [key:number]:SongInfoInner
+};
+
+export type SongInfoInner = {
     Title:string,
     Band:string,
     Difficulties:DifficultyInfos
