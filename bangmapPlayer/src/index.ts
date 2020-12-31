@@ -35,7 +35,10 @@ export default class bangMapApp {
         songList_all: HTMLElement,
         songList_dl: HTMLElement,
         songList_history: HTMLElement,
-        songList_favorite: HTMLElement
+        songList_favorite: HTMLElement,
+
+        panel_preference: HTMLElement,
+        panel_info: HTMLElement
     };
     private songInfos: SongInfo;
     private apiInfo: ApiInfo;
@@ -67,7 +70,9 @@ export default class bangMapApp {
             songList_all: document.getElementById("songlist_all"),
             songList_dl: document.getElementById("songlist_dl"),
             songList_history: document.getElementById("songlist_history"),
-            songList_favorite: document.getElementById("songlist_favorite")
+            songList_favorite: document.getElementById("songlist_favorite"),
+            panel_preference: document.getElementById("preference"),
+            panel_info: document.getElementById("info_panel")
         };
 
         this._cacheManager = new CacheManager();
@@ -163,6 +168,9 @@ export default class bangMapApp {
         this.Elements.filter_favoriteRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
         this.Elements.filter_bandCombo.addEventListener("change", () => this.onSonglistComboFilterChanged());
         this.Elements.songIdTextBox.addEventListener("blur", () => setFullScreen());
+        this.Elements.showPrefButton.addEventListener("click", () => this.onPreferenceButtonClick());
+        this.Elements.showInfoButton.addEventListener("click", () => this.onInfoButtonClick());
+        this.Elements.closeInfoButton.addEventListener("click", () => this.onCloseInfoButtonClick());
     }
 
     private onSonglistRadioFilterChanged(){
@@ -181,5 +189,17 @@ export default class bangMapApp {
         this.dlSongAdapter.Update(auditor);
         this.historySongAdapter.Update(auditor);
         this.favoriteSongAdapter.Update(auditor);
+    }
+
+    private onPreferenceButtonClick(){
+        this.Elements.panel_preference.style.display = "block";
+    }
+
+    private onInfoButtonClick(){
+        this.Elements.panel_info.style.display = "block";
+    }
+    
+    private onCloseInfoButtonClick(){
+        this.Elements.panel_info.style.display = "none";
     }
 }
