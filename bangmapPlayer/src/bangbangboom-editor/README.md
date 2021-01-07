@@ -1,0 +1,1 @@
+All files placed in this directory and its child directories are contained in bangbangboom-editor (https://github.com/K024/bangbangboom-editor), distributed under MIT License. Please check LICENSE file to learn more informations.
