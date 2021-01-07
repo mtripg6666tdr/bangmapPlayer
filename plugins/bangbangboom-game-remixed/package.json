@@ -2,7 +2,7 @@
   "name": "bangbangboom-game-remixed",
   "version": "0.0.3",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "mtripg6666tdr",
   "dependencies": {
     "bangbangboom-game": "git+https://github.com/mtripg6666tdr/bangbangboom-game"
