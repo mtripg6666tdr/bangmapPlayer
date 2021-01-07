@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "sourceMap": false,
-        "target": "ES3",
+        "target": "ES5",
+        "downlevelIteration": true,
         "module": "CommonJS",
         "noImplicitAny": true,
         "allowSyntheticDefaultImports": true,

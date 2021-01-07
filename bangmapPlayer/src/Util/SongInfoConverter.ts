@@ -25,7 +25,7 @@ export function ConvertFromBestdori(data:BestdoriAllSongInfo, bands:BestdoriAllB
                     break;
             }
         }
-        result[Number(keys[i])]=  {
+        result[Number(keys[i])] =  {
             Title:data[Number(keys[i])].musicTitle[0],
             Band:bands[data[Number(keys[i])].bandId].bandName[0],
             Difficulties:diffs

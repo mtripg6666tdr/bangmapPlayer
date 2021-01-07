@@ -6,74 +6,35 @@ import { downloadFromURL } from "./Util/downloadFromURL";
 import { ApiInfo } from "./Core/ApiInfo";
 import { FileName } from "./Core/FileName";
 import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
-import { BestdoriAllBandInfo, BestdoriAllSongInfo, SongInfo, SongInfoInner } from "./Core/SongInfo";
+import { BestdoriAllBandInfo, BestdoriAllSongInfo, DetailedSongInfo, SongInfo, SongInfoInner } from "./Core/SongInfo";
 import { ConvertFromBestdori, GetSongID } from "./Util/SongInfoConverter";
 import { LocalSongIDListManager } from "./Common/LocalSongIDListManager";
 import { SongListAdapter } from "./Common/ListAdapter";
 import { spinnerOpts } from "./Core/SpinnerOpts";
+import { bangMapAppElements, initBangmapAppElements } from "./Util/bangmapAppElements";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
-    private Elements:{
-        loadSongButton:HTMLElement,
-        gamePlayButton:HTMLElement,
-        showInfoButton:HTMLElement,
-        closeInfoButton:HTMLElement,
-        showPrefButton:HTMLElement,
-        savePrefButton:HTMLElement,
-        closePrefButton:HTMLElement,
-
-        songIdTextBox:HTMLInputElement,
-
-        filter_allRadio:HTMLInputElement,
-        filter_dlRadio:HTMLInputElement,
-        filter_historyRadio:HTMLInputElement,
-        filter_favoriteRadio:HTMLInputElement,
-
-        filter_bandCombo:HTMLInputElement
-
-        songList_all: HTMLElement,
-        songList_dl: HTMLElement,
-        songList_history: HTMLElement,
-        songList_favorite: HTMLElement,
-
-        panel_preference: HTMLElement,
-        panel_info: HTMLElement
-    };
+    private Elements: bangMapAppElements
+    // Song Info
     private songInfos: SongInfo;
+    private detailedSongInfos: DetailedSongInfo;
+    
     private apiInfo: ApiInfo;
     private dataDirectory:DirectoryEntry;
     private isOnline: boolean;
+    // ID List Manager
     private downloadedList: LocalSongIDListManager;
     private historyList: LocalSongIDListManager;
     private favoriteList: LocalSongIDListManager;
+    // Adapter
     private allSongAdapter: SongListAdapter;
     private dlSongAdapter: SongListAdapter;
     private historySongAdapter: SongListAdapter;
     private favoriteSongAdapter: SongListAdapter;
 
     constructor(){
-        this.Elements = {
-            loadSongButton: document.getElementById("load_song"),
-            gamePlayButton: document.getElementById("game_play"),
-            showInfoButton: document.getElementById("show_information"),
-            closeInfoButton: document.getElementById("close_infoPanel_button"),
-            showPrefButton: document.getElementById("show_preference_panel"),
-            savePrefButton: document.getElementById("preference_save"),
-            closePrefButton: document.getElementById("close_preference_button"),
-            songIdTextBox: document.getElementById("song_id") as HTMLInputElement,
-            filter_allRadio: document.getElementById("filter_all") as HTMLInputElement,
-            filter_dlRadio: document.getElementById("filter_dl") as HTMLInputElement,
-            filter_historyRadio: document.getElementById("filter_history") as HTMLInputElement,
-            filter_favoriteRadio: document.getElementById("filter_favorite") as HTMLInputElement,
-            filter_bandCombo: document.getElementById("filter_band") as HTMLInputElement,
-            songList_all: document.getElementById("songlist_all"),
-            songList_dl: document.getElementById("songlist_dl"),
-            songList_history: document.getElementById("songlist_history"),
-            songList_favorite: document.getElementById("songlist_favorite"),
-            panel_preference: document.getElementById("preference"),
-            panel_info: document.getElementById("info_panel")
-        };
+        this.Elements = initBangmapAppElements();
 
         this._cacheManager = new CacheManager();
         this.songInfos = null;
@@ -81,10 +42,10 @@ export default class bangMapApp {
         this.dataDirectory = null;
         this.isOnline = isConnected();
         if(!this.isOnline){
-            this.Elements.filter_allRadio.disabled = true;
-            this.Elements.filter_dlRadio.checked = true;
-            this.Elements.songList_all.style.display = "none";
-            this.Elements.songList_dl.style.display = "block";
+            this.Elements.Filter.allRadio.disabled = true;
+            this.Elements.Filter.dlRadio.checked = true;
+            this.Elements.Fragment.songList_all.style.display = "none";
+            this.Elements.Fragment.songList_dl.style.display = "block";
         }
     }
 
@@ -97,6 +58,9 @@ export default class bangMapApp {
         this.stopSpin(spinner);
     }
 
+    //
+    // Spinner
+    //
     runSpin() {
         return new Spinner(spinnerOpts).spin(document.getElementById("spinner"));
     }
@@ -106,6 +70,9 @@ export default class bangMapApp {
         document.getElementById("spinner_back").remove();
     }
 
+    //
+    // Private Member Method
+    //
     private async init(){
         // get directory entry
         this.dataDirectory = await resolveLocalFileSystemURL_s(cordova.file.dataDirectory);
@@ -151,40 +118,43 @@ export default class bangMapApp {
         band.forEach(v => {
             const option = document.createElement("option");
             option.textContent = v;
-            this.Elements.filter_bandCombo.appendChild(option);
+            this.Elements.Filter.bandCombo.appendChild(option);
         });
 
         // create adapter
-        this.allSongAdapter = new SongListAdapter(GetSongID(this.songInfos), this.songInfos, this.Elements.songList_all).Update();
-        this.dlSongAdapter = new SongListAdapter(this.downloadedList.SongList, this.songInfos, this.Elements.songList_dl).Update();
-        this.historySongAdapter = new SongListAdapter(this.historyList.SongList, this.songInfos, this.Elements.songList_history).Update();
-        this.favoriteSongAdapter = new SongListAdapter(this.favoriteList.SongList, this.songInfos, this.Elements.songList_favorite).Update();
+        this.allSongAdapter = new SongListAdapter(GetSongID(this.songInfos), this.songInfos, this.Elements.Fragment.songList_all).Update();
+        this.dlSongAdapter = new SongListAdapter(this.downloadedList.SongList, this.songInfos, this.Elements.Fragment.songList_dl).Update();
+        this.historySongAdapter = new SongListAdapter(this.historyList.SongList, this.songInfos, this.Elements.Fragment.songList_history).Update();
+        this.favoriteSongAdapter = new SongListAdapter(this.favoriteList.SongList, this.songInfos, this.Elements.Fragment.songList_favorite).Update();
     }
 
     private setEventHandlers(){
-        this.Elements.filter_allRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
-        this.Elements.filter_dlRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
-        this.Elements.filter_historyRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
-        this.Elements.filter_favoriteRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
-        this.Elements.filter_bandCombo.addEventListener("change", () => this.onSonglistComboFilterChanged());
-        this.Elements.songIdTextBox.addEventListener("blur", () => setFullScreen());
-        this.Elements.showPrefButton.addEventListener("click", () => this.onPreferenceButtonClick());
-        this.Elements.showInfoButton.addEventListener("click", () => this.onInfoButtonClick());
-        this.Elements.closeInfoButton.addEventListener("click", () => this.onCloseInfoButtonClick());
-        this.Elements.loadSongButton.addEventListener("click", ()=> this.onLoadSongButtonClick());
+        this.Elements.Filter.allRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
+        this.Elements.Filter.dlRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
+        this.Elements.Filter.historyRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
+        this.Elements.Filter.favoriteRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
+        this.Elements.Filter.bandCombo.addEventListener("change", () => this.onSonglistComboFilterChanged());
+        this.Elements.TextBox.songIdTextBox.addEventListener("blur", () => setFullScreen());
+        this.Elements.Button.showPrefButton.addEventListener("click", () => this.onPreferenceButtonClick());
+        this.Elements.Button.showInfoButton.addEventListener("click", () => this.onInfoButtonClick());
+        this.Elements.Button.closeInfoButton.addEventListener("click", () => this.onCloseInfoButtonClick());
+        this.Elements.Button.loadSongButton.addEventListener("click", ()=> this.onLoadSongButtonClick());
     }
 
+    //
+    // Event handlers 
+    //
     private onSonglistRadioFilterChanged(){
-        this.Elements.songList_all.style.display = this.Elements.filter_allRadio.checked ? "block" : "none";
-        this.Elements.songList_dl.style.display = this.Elements.filter_dlRadio.checked ? "block" : "none";
-        this.Elements.songList_history.style.display = this.Elements.filter_historyRadio.checked ? "block" : "none";
-        this.Elements.songList_favorite.style.display = this.Elements.filter_favoriteRadio.checked ? "block" : "none";
+        this.Elements.Fragment.songList_all.style.display = this.Elements.Filter.allRadio.checked ? "block" : "none";
+        this.Elements.Fragment.songList_dl.style.display = this.Elements.Filter.dlRadio.checked ? "block" : "none";
+        this.Elements.Fragment.songList_history.style.display = this.Elements.Filter.historyRadio.checked ? "block" : "none";
+        this.Elements.Fragment.songList_favorite.style.display = this.Elements.Filter.favoriteRadio.checked ? "block" : "none";
     }
 
     private onSonglistComboFilterChanged(){
         var auditor:(v:SongInfoInner)=>boolean = null;
-        if(!this.Elements.filter_bandCombo.value.startsWith("Filter")){
-            auditor = v => this.Elements.filter_bandCombo.value === v.Band;
+        if(!this.Elements.Filter.bandCombo.value.startsWith("Filter")){
+            auditor = v => this.Elements.Filter.bandCombo.value === v.Band;
         }
         this.allSongAdapter.Update(auditor);
         this.dlSongAdapter.Update(auditor);
@@ -193,7 +163,7 @@ export default class bangMapApp {
     }
 
     private onPreferenceButtonClick(){
-        this.Elements.panel_preference.style.display = "block";
+        this.Elements.Panel.panel_preference.style.display = "block";
     }
 
     private onInfoButtonClick(){
@@ -202,14 +172,15 @@ export default class bangMapApp {
         }, function(error){
 
         });
-        this.Elements.panel_info.style.display = "block";
+        this.Elements.Panel.panel_info.style.display = "block";
     }
     
     private onCloseInfoButtonClick(){
-        this.Elements.panel_info.style.display = "none";
+        this.Elements.Panel.panel_info.style.display = "none";
     }
 
     private onLoadSongButtonClick(){
-
+        const songid = Number(this.Elements.TextBox.songIdTextBox.value);
+        
     }
 }

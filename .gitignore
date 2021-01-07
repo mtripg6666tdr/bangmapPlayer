@@ -6,3 +6,4 @@ bundle.js
 **/node_modules
 plugins/*
 !**/plugins/bangbangboom-game-remixed
+*.cache
