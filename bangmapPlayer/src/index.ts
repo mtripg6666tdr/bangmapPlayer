@@ -4,21 +4,22 @@ import { setFullScreen } from "./Util/setFullScreen";
 import { isConnected } from "./Util/isInternetAvailable";
 import { downloadFromURL } from "./Util/downloadFromURL";
 import { ApiInfo } from "./Core/ApiInfo";
-import { FileName } from "./Core/FileName";
+import * as FileName from "./Core/FileName";
 import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
-import { BestdoriAllBandInfo, BestdoriAllSongInfo, DetailedSongInfo, SongInfo, SongInfoInner } from "./Core/SongInfo";
-import { ConvertFromBestdori, GetSongID } from "./Util/SongInfoConverter";
+import { BestdoriAllBandInfo, BestdoriAllSongInfo, BestdoriSingleSongInfo, DetailedSongInfo, DetailedSongInfoInner, SongID, SongInfo, SongInfoInner } from "./Core/SongInfo";
+import { ConvertFromBestdori, ConvertFromBestdoriSingleSongInfo, GetSongID } from "./Util/SongInfoConverter";
 import { LocalSongIDListManager } from "./Common/LocalSongIDListManager";
 import { SongListAdapter } from "./Common/ListAdapter";
 import { spinnerOpts } from "./Core/SpinnerOpts";
 import { bangMapAppElements, initBangmapAppElements } from "./Util/bangmapAppElements";
+import { SongInfoContainerManager } from "./Common/SongInfoContainerManager";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
     private Elements: bangMapAppElements
     // Song Info
     private songInfos: SongInfo;
-    private detailedSongInfos: DetailedSongInfo;
+    private songids: SongID[];
     
     private apiInfo: ApiInfo;
     private dataDirectory:DirectoryEntry;
@@ -27,6 +28,8 @@ export default class bangMapApp {
     private downloadedList: LocalSongIDListManager;
     private historyList: LocalSongIDListManager;
     private favoriteList: LocalSongIDListManager;
+    // Element Manager
+    private songinfoContainerManager: SongInfoContainerManager;
     // Adapter
     private allSongAdapter: SongListAdapter;
     private dlSongAdapter: SongListAdapter;
@@ -37,6 +40,7 @@ export default class bangMapApp {
         this.Elements = initBangmapAppElements();
 
         this._cacheManager = new CacheManager();
+        this.songinfoContainerManager = new SongInfoContainerManager(this.Elements);
         this.songInfos = null;
         this.apiInfo = null;
         this.dataDirectory = null;
@@ -101,6 +105,8 @@ export default class bangMapApp {
                 // Can't run app; need network in first launch
             }
         }
+        // get all song ids
+        this.songids = GetSongID(this.songInfos);
 
         // get each list
         this.downloadedList = await new LocalSongIDListManager(this.dataDirectory, FileName.downloadedSongInfo).init();
@@ -135,10 +141,11 @@ export default class bangMapApp {
         this.Elements.Filter.favoriteRadio.addEventListener("change", () => this.onSonglistRadioFilterChanged());
         this.Elements.Filter.bandCombo.addEventListener("change", () => this.onSonglistComboFilterChanged());
         this.Elements.TextBox.songIdTextBox.addEventListener("blur", () => setFullScreen());
+        this.Elements.TextBox.songIdTextBox.addEventListener("change", () => this.onSongIdTextBoxChanged())
         this.Elements.Button.showPrefButton.addEventListener("click", () => this.onPreferenceButtonClick());
         this.Elements.Button.showInfoButton.addEventListener("click", () => this.onInfoButtonClick());
         this.Elements.Button.closeInfoButton.addEventListener("click", () => this.onCloseInfoButtonClick());
-        this.Elements.Button.loadSongButton.addEventListener("click", ()=> this.onLoadSongButtonClick());
+        this.Elements.Button.loadSongButton.addEventListener("click", () => this.onLoadSongButtonClick());
     }
 
     //
@@ -179,8 +186,26 @@ export default class bangMapApp {
         this.Elements.Panel.panel_info.style.display = "none";
     }
 
-    private onLoadSongButtonClick(){
+    private onSongIdTextBoxChanged(){
+        this.songinfoContainerManager.Close();
+    }
+
+    private async onLoadSongButtonClick(){
         const songid = Number(this.Elements.TextBox.songIdTextBox.value);
-        
+        if(Number.isNaN(songid)){
+            return;
+        }else if(this.songids.indexOf(songid) < 0){
+            return;
+        }
+        var detailed:DetailedSongInfoInner = null;
+        const file = new FileUtil(this.dataDirectory, FileName.getDetailedSongInfoFileName(songid));
+        if(this.downloadedList.SongList.indexOf(songid) > 0){
+            detailed = JSON.parse(await file.readText()) as DetailedSongInfoInner
+        }else{
+            detailed = ConvertFromBestdoriSingleSongInfo((await downloadFromURL(this.apiInfo.songInfo.replace(/{num}/g, songid.toString()), "json")) as BestdoriSingleSongInfo)
+            file.writeText(JSON.stringify(detailed));
+        }
+        this.songinfoContainerManager.Update(this.songInfos[songid], detailed);
+        // temporary note: ここに曲のバイナリおよび各マップのダウンロードをする処理を記述する。
     }
 }

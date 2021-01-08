@@ -1,4 +1,4 @@
-import { BestdoriAllBandInfo, BestdoriAllSongInfo, DifficultyInfos, SongInfo } from "../Core/SongInfo";
+import { BestdoriAllBandInfo, BestdoriAllSongInfo, BestdoriSingleSongInfo, DetailedSongInfoInner, DifficultyInfos, SongID, SongInfo } from "../Core/SongInfo";
 
 export function ConvertFromBestdori(data:BestdoriAllSongInfo, bands:BestdoriAllBandInfo): SongInfo {
     const keys = Object.keys(data);
@@ -34,9 +34,37 @@ export function ConvertFromBestdori(data:BestdoriAllSongInfo, bands:BestdoriAllB
     return result;
 }
 
-export function GetSongID(infos:SongInfo){
+export function GetSongID(infos:SongInfo):SongID[] {
     const num = [] as number[];
     const keys = Object.keys(infos);
     keys.forEach(k => num.push(Number(k)));
     return num;
+}
+
+export function ConvertFromBestdoriSingleSongInfo(data:BestdoriSingleSongInfo): DetailedSongInfoInner{
+    return {
+        FullCombo: {
+            Easy:false,
+            Normal:false,
+            Hard:false,
+            Expert:false,
+            Special: false,
+        },
+        HighScore: {
+            Easy:0,
+            Normal:0,
+            Hard:0,
+            Expert:0,
+            Special:0
+        },
+        Notes: {
+            Easy: data.notes[0],
+            Normal: data.notes[1],
+            Hard:data.notes[2],
+            Expert:data.notes[3],
+            Special:data.notes[4]
+        },
+        CoverImage: data.jacketImage[0]
+    }
+
 }

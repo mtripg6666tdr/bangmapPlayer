@@ -20,7 +20,8 @@ export type DetailedSongInfo = {
 export type DetailedSongInfoInner = {
     Notes:NoteInfos,
     HighScore: HighScoreInfos,
-    FullCombo: FullComboInfos
+    FullCombo: FullComboInfos,
+    CoverImage: string
 }
 
 export type BestdoriAllSongInfo = {
@@ -39,4 +40,43 @@ export type BestdoriAllBandInfo = {
     [key:number]:{
         bandName:[string,string,string,string,string]
     }
+}
+
+export type BestdoriSingleSongInfo = {
+    bgmId:        string;
+    bgmFile:      string;
+    tag:          any;
+    bandId:       number;
+    achievements: any;
+    jacketImage:  string[];
+    seq:          number;
+    musicTitle:   string[];
+    lyricist:     string[];
+    composer:     string[];
+    arranger:     string[];
+    howToGet:     string[];
+    publishedAt:  string[];
+    closedAt:     string[];
+    description:  string[];
+    difficulty:   { 
+        [key: string]: {
+            playLevel:         number;
+            multiLiveScoreMap: any;
+            notesQuantity:     number;
+            scoreC:            number;
+            scoreB:            number;
+            scoreA:            number;
+            scoreS:            number;
+            scoreSS:           number;
+        }   
+    };
+    length:       number;
+    notes:        { [key in "0"|"1"|"2"|"3"|"4"]: number };
+    bpm:          {
+        [key: string]:  {
+            bpm:   number;
+            start: number;
+            end:   number;
+        }[]
+    };
 }

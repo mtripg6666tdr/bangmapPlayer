@@ -5,6 +5,6 @@
   "main": "dist/index.js",
   "author": "mtripg6666tdr",
   "dependencies": {
-    "bangbangboom-game": "git+https://github.com/mtripg6666tdr/bangbangboom-game"
+    "bangbangboom-game": "git+https://github.com/mtripg6666tdr/bangbangboom-game.git"
   }
 }
