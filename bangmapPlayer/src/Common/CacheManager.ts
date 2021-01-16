@@ -1,4 +1,4 @@
-import {SongInfo} from "../Core/SongInfo";
+import { SongInfo } from "../Core/SongInfo";
 import { Manager } from "./CommonBase";
 
 export class CacheManager extends Manager {

@@ -1,20 +1,20 @@
 import { Spinner } from "spin.js";
+import { toGameContent } from "./bangbangboom-editor/MapFormats/bbbgame";
+import { fromBBBv1Format } from "./bangbangboom-editor/MapFormats/bbbv1";
 import { CacheManager } from "./Common/CacheManager";
-import { setFullScreen } from "./Util/setFullScreen";
-import { isConnected } from "./Util/isInternetAvailable";
-import { downloadFromURL } from "./Util/downloadFromURL";
+import { SongListAdapter } from "./Common/ListAdapter";
+import { LocalSongIDListManager } from "./Common/LocalSongIDListManager";
+import { SongInfoContainerManager } from "./Common/SongInfoContainerManager";
 import { ApiInfo } from "./Core/ApiInfo";
 import * as FileName from "./Core/FileName";
-import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
-import { BestdoriAllBandInfo, BestdoriAllSongInfo, BestdoriSingleSongInfo, DetailedSongInfo, DetailedSongInfoInner, DifficultyNames, SongID, SongInfo, SongInfoInner } from "./Core/SongInfo";
-import { ConvertFromBestdori, ConvertFromBestdoriSingleSongInfo, GetSongID } from "./Util/SongInfoConverter";
-import { LocalSongIDListManager } from "./Common/LocalSongIDListManager";
-import { SongListAdapter } from "./Common/ListAdapter";
+import { BestdoriAllBandInfo, BestdoriAllSongInfo, BestdoriSingleSongInfo, DetailedSongInfoInner, DifficultyNames, SongID, SongInfo, SongInfoInner } from "./Core/SongInfo";
 import { spinnerOpts } from "./Core/SpinnerOpts";
 import { bangMapAppElements, initBangmapAppElements } from "./Util/bangmapAppElements";
-import { SongInfoContainerManager } from "./Common/SongInfoContainerManager";
-import { fromBBBv1Format } from "./bangbangboom-editor/MapFormats/bbbv1";
-import { toGameContent } from "./bangbangboom-editor/MapFormats/bbbgame";
+import { downloadFromURL } from "./Util/downloadFromURL";
+import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
+import { isConnected } from "./Util/isInternetAvailable";
+import { setFullScreen } from "./Util/setFullScreen";
+import { ConvertFromBestdori, ConvertFromBestdoriSingleSongInfo, GetSongID } from "./Util/SongInfoConverter";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
