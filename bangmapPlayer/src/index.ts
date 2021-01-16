@@ -6,13 +6,15 @@ import { downloadFromURL } from "./Util/downloadFromURL";
 import { ApiInfo } from "./Core/ApiInfo";
 import * as FileName from "./Core/FileName";
 import { FileUtil, resolveLocalFileSystemURL_s } from "./Util/fileUtil";
-import { BestdoriAllBandInfo, BestdoriAllSongInfo, BestdoriSingleSongInfo, DetailedSongInfo, DetailedSongInfoInner, SongID, SongInfo, SongInfoInner } from "./Core/SongInfo";
+import { BestdoriAllBandInfo, BestdoriAllSongInfo, BestdoriSingleSongInfo, DetailedSongInfo, DetailedSongInfoInner, DifficultyNames, SongID, SongInfo, SongInfoInner } from "./Core/SongInfo";
 import { ConvertFromBestdori, ConvertFromBestdoriSingleSongInfo, GetSongID } from "./Util/SongInfoConverter";
 import { LocalSongIDListManager } from "./Common/LocalSongIDListManager";
 import { SongListAdapter } from "./Common/ListAdapter";
 import { spinnerOpts } from "./Core/SpinnerOpts";
 import { bangMapAppElements, initBangmapAppElements } from "./Util/bangmapAppElements";
 import { SongInfoContainerManager } from "./Common/SongInfoContainerManager";
+import { fromBBBv1Format } from "./bangbangboom-editor/MapFormats/bbbv1";
+import { toGameContent } from "./bangbangboom-editor/MapFormats/bbbgame";
 
 export default class bangMapApp {
     _cacheManager:CacheManager;
@@ -59,19 +61,21 @@ export default class bangMapApp {
         (document.getElementsByClassName("app")[0] as HTMLBodyElement).style.display = "none";
         await this.init();
         this.setEventHandlers();
-        this.stopSpin(spinner);
+        this.stopSpin();
     }
 
     //
     // Spinner
     //
+    private _spinner:Spinner;
     runSpin() {
-        return new Spinner(spinnerOpts).spin(document.getElementById("spinner"));
+        document.getElementById("spinner_back").style.display = "block";
+        return this._spinner ?? (this._spinner = new Spinner(spinnerOpts).spin(document.getElementById("spinner")));
     }
 
-    stopSpin(spinner:Spinner){
-        spinner.stop();
-        document.getElementById("spinner_back").remove();
+    stopSpin(){
+        this._spinner.stop();
+        document.getElementById("spinner_back").style.display = "none";
     }
 
     //
@@ -191,21 +195,51 @@ export default class bangMapApp {
     }
 
     private async onLoadSongButtonClick(){
-        const songid = Number(this.Elements.TextBox.songIdTextBox.value);
-        if(Number.isNaN(songid)){
-            return;
-        }else if(this.songids.indexOf(songid) < 0){
-            return;
+        this.Elements.Button.loadSongButton.disabled = true;
+        this.runSpin();
+        try{
+            const songid = Number(this.Elements.TextBox.songIdTextBox.value);
+            if(Number.isNaN(songid)){ // Text was not number
+                return;
+            }else if(this.songids.indexOf(songid) < 0){ // ID was not find in db
+                return;
+            }
+            var detailed:DetailedSongInfoInner = null;
+            const detailedsonginfoFile = new FileUtil(this.dataDirectory, FileName.getDetailedSongInfoFileName(songid));
+            if(this.downloadedList.SongList.indexOf(songid) > 0){
+                detailed = JSON.parse(await detailedsonginfoFile.readText()) as DetailedSongInfoInner;
+                const rawmapFile = {
+                    "Easy": new FileUtil(this.dataDirectory, FileName.getMapFileName(songid, "Easy")),
+                    "Normal": new FileUtil(this.dataDirectory, FileName.getMapFileName(songid, "Normal")),
+                    "Hard":new FileUtil(this.dataDirectory, FileName.getMapFileName(songid, "Hard")),
+                    "Expert":new FileUtil(this.dataDirectory, FileName.getMapFileName(songid, "Expert")),
+                    "Special":new FileUtil(this.dataDirectory, FileName.getMapFileName(songid, "Special"))
+                } as {[key in DifficultyNames]:FileUtil};
+                const audioFile = new FileUtil(this.dataDirectory, FileName.getSongBinaryFileName(songid));
+                const diffs = Object.keys(detailed.Notes);
+                for(var i = 0; i < diffs.length; i++){
+                    // Download Bestdori map
+                    const bestdoriMap = await downloadFromURL(this.apiInfo.map.replace(/{num}/g, songid.toString()).replace(/{dif}/g, diffs[i].toLowerCase()), "json");
+                    // Bestdori => bangbangboom v1
+                    const bbbv1Map    = bestdori2bbb(bestdoriMap);
+                    // bangbangboom v1 => bangbangboom editor map
+                    const editMap     = fromBBBv1Format(bbbv1Map);
+                    // bangbangboom editor map => bangbangboom game map
+                    const gameMap     = toGameContent(editMap);
+                    rawmapFile[diffs[i] as DifficultyNames].writeText(JSON.stringify(gameMap));
+                }
+            }else{
+                detailed = ConvertFromBestdoriSingleSongInfo((await downloadFromURL(this.apiInfo.songInfo.replace(/{num}/g, songid.toString()), "json")) as BestdoriSingleSongInfo)
+                detailedsonginfoFile.writeText(JSON.stringify(detailed));
+            }
+            this.songinfoContainerManager.Update(this.songInfos[songid], detailed);
         }
-        var detailed:DetailedSongInfoInner = null;
-        const file = new FileUtil(this.dataDirectory, FileName.getDetailedSongInfoFileName(songid));
-        if(this.downloadedList.SongList.indexOf(songid) > 0){
-            detailed = JSON.parse(await file.readText()) as DetailedSongInfoInner
-        }else{
-            detailed = ConvertFromBestdoriSingleSongInfo((await downloadFromURL(this.apiInfo.songInfo.replace(/{num}/g, songid.toString()), "json")) as BestdoriSingleSongInfo)
-            file.writeText(JSON.stringify(detailed));
+        catch(e){
+
         }
-        this.songinfoContainerManager.Update(this.songInfos[songid], detailed);
-        // temporary note: ここに曲のバイナリおよび各マップのダウンロードをする処理を記述する。
+        finally{
+            this.Elements.Button.loadSongButton.disabled = false;
+            this.stopSpin();
+        }
     }
 }

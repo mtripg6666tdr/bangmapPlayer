@@ -1,7 +1,7 @@
 export type bangMapAppElements = {
     // Buttons
     Button: {
-        loadSongButton:HTMLElement,
+        loadSongButton:HTMLButtonElement,
         gamePlayButton:HTMLElement,
         showInfoButton:HTMLElement,
         closeInfoButton:HTMLElement,
@@ -69,7 +69,7 @@ export type bangMapAppElements = {
 export function initBangmapAppElements():bangMapAppElements {
     return {
         Button:{
-            loadSongButton: document.getElementById("load_song"),
+            loadSongButton: document.getElementById("load_song") as HTMLButtonElement,
             gamePlayButton: document.getElementById("game_play"),
             showInfoButton: document.getElementById("show_information"),
             closeInfoButton: document.getElementById("close_infoPanel_button"),
