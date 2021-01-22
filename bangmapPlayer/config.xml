@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="com.mtripg6666tdr.bangmapPlayer" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="ja-JP">
-  <name>bangmapPlayer</name>
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="com.mtripg6666tdr.bangmapPlayer.Plus" version="2.0.0b1.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="ja-JP">
+  <name>bangmapPlayerPlus</name>
   <description>bangmapPlayerでお気に入りの曲をキャッシュして、オフライン環境や帯域幅の制限ある環境でbangMapをプレイしましょう</description>
   <author href="https://scrpg.tyanoyu.net/" email="mtripg6666tdr@outlook.com">mtripg6666tdr</author>
   <vs:template-name>BlankJS</vs:template-name>

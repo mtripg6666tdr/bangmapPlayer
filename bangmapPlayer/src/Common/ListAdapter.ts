@@ -5,6 +5,7 @@ export class SongListAdapter extends Adapter {
     private data: SongID[];
     private element:HTMLElement;
     private database: SongInfo;
+    ClickCard:[(id:SongID)=>void] = [()=>{}];
 
     constructor(data:SongID[], database:SongInfo, element:HTMLElement){
         super();
@@ -26,6 +27,11 @@ export class SongListAdapter extends Adapter {
         }else{
             this._update(this.data);
         }
+        return this;
+    }
+
+    AddClickEventListener(handler:(id:SongID)=>void){
+        this.ClickCard.push(handler);
         return this;
     }
 
@@ -123,6 +129,10 @@ export class SongListAdapter extends Adapter {
         card.appendChild(title_p);
         card.appendChild(band_p);
         card.appendChild(levels);
+
+        card.addEventListener("click", ()=>{
+            this.ClickCard.forEach(h => h(Number(card.dataset["songid"])));
+        })
         return card;
     }
 }

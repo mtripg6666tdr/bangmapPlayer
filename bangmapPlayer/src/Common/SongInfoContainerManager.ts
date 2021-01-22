@@ -1,8 +1,9 @@
 import { bangMapAppElements } from "../Util/bangmapAppElements";
-import { DetailedSongInfoInner, DifficultyNames, SongInfoInner } from "../Core/SongInfo";
+import { DetailedSongInfoInner, DifficultyNames, SongID, SongInfoInner } from "../Core/SongInfo";
 import { CommonBase } from "./CommonBase";
 
 export class SongInfoContainerManager extends CommonBase {
+    CurrentSongID:SongID = -1;
     private Elements:bangMapAppElements;
     private hasSpecial:boolean;
 
@@ -34,10 +35,17 @@ export class SongInfoContainerManager extends CommonBase {
         if(this.hasSpecial){
             panelElems.Notes.Special.textContent = detailedinfo.Notes.Special.toString();
             panelElems.Notes.Special.style.display = "block";
-            panelElems.DifficultySelection.Special.style.display = "block";
+            /* radio input*/panelElems.DifficultySelection.Special
+            /*label*/.parentElement./*td*/parentElement.style.display = "block";
+            panelElems.SpecialLabel.style.display = "block";
         }else{
             panelElems.Notes.Special.style.display = "none";
-            panelElems.DifficultySelection.Special.style.display = "none";
+            /* radio input*/panelElems.DifficultySelection.Special
+            /*label*/.parentElement./*td*/parentElement.style.display = "none";
+            panelElems.SpecialLabel.style.display = "none";
+            if(panelElems.DifficultySelection.Special.checked){
+                panelElems.DifficultySelection.Hard.checked = true;
+            }
         }
         this.Elements.Container.songInfo.body.style.display = "block";
     }

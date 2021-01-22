@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "private": true,
     "dependencies": {
-        "bangbangboom-game": "git+https://github.com/K024/bangbangboom-game.git#a08bdef59517692cfa343c1ddbe1b9a1902e8956",
         "bangbangboom-game-remixed": "file:../plugins/bangbangboom-game-remixed",
         "mobx": "^6.0.4",
         "spin.js": "^4.1.0"

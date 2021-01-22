@@ -60,10 +60,12 @@ export type bangMapAppElements = {
                     Hard:HTMLElement,
                     Expert:HTMLElement,
                     Special:HTMLElement
-                }
+                },
+                SpecialLabel: HTMLElement
             }
         }
-    }
+    },
+    MainCanvas: HTMLElement
 };
 
 export function initBangmapAppElements():bangMapAppElements {
@@ -123,9 +125,11 @@ export function initBangmapAppElements():bangMapAppElements {
                         Hard: document.getElementById("song_notes_hard"),
                         Expert: document.getElementById("song_notes_expert"),
                         Special: document.getElementById("song_notes_special")
-                    }
+                    },
+                    SpecialLabel: document.getElementById("song_level_special_title")
                 }
             }
-        }
+        },
+        MainCanvas: document.getElementById("app_game")
     };
 }

@@ -53,11 +53,14 @@ export class FileUtil extends UtilBase {
         return new Promise<string>(async (resolve,reject) => {
             if(await this.exists()){
                 this.fileEntry.file(function(file){
-                    file.text().then(function(data){
-                        resolve(data);
-                    }, function(error){
+                    const reader = new FileReader();
+                    reader.onloadend = function(data){
+                        resolve(data.target.result as string);
+                    }
+                    reader.onerror = function(error){
                         reject(error);
-                    })
+                    };
+                    reader.readAsText(file, "utf-8")
                 })
             }else{
                 reject("Target file was not found");
@@ -66,17 +69,17 @@ export class FileUtil extends UtilBase {
     }
 
     readBinary(){
-        return new Promise<string>(async (resolve,reject) => {
+        return new Promise<ArrayBuffer>(async (resolve,reject) => {
             if(await this.exists()){
                 this.fileEntry.file(function(file){
                     const reader = new FileReader();
                     reader.onloadend = function(){
-                        resolve(this.result as string);
+                        resolve(this.result as ArrayBuffer);
                     }
                     reader.onerror = function(e){
                         reject(e);
                     }
-                    reader.readAsDataURL(file);
+                    reader.readAsArrayBuffer(file);
                 })
             }else{
                 reject("Target file was not found");
@@ -86,10 +89,13 @@ export class FileUtil extends UtilBase {
 
     exists(){
         return new Promise<boolean>((resolve,reject) => {
-            this.directoryEntry.getFile(this.fileName, {create:false}, function(entry){
+            if(this.fileEntry){
+                resolve(true);
+            }
+            this.directoryEntry.getFile(this.fileName, {create:false}, (entry)=>{
                 this.fileEntry = entry;
                 resolve(true);
-            }, function(){
+            }, ()=>{
                 resolve(false);
             })
         });
