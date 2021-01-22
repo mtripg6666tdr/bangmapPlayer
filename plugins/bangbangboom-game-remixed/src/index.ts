@@ -1,1 +1,1 @@
-export { Game, GameConfig, GameLoadConfig, MapDefinitions } from "bangbangboom-game";
+export { Game, GameConfig, GameLoadConfig, RawMap, NoteType, Slide, MapDefinitions } from "bangbangboom-game";

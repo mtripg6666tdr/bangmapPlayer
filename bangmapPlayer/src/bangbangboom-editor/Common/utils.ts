@@ -1,4 +1,4 @@
-import { scope } from "../MappingScope/scope"
+//import { scope } from "../MappingScope/scope"
 
 export class RunIntoNeverError extends Error { }
 
@@ -169,7 +169,7 @@ export function range(from: number, to?: number, step?: number) {
   return res
 }
 
-export function downLoadFile(content: string | Blob) {
+export function downLoadFile(content: string | Blob) {/*
   if (typeof content === "string")
     content = new Blob([content])
   const url = URL.createObjectURL(content)
@@ -180,7 +180,7 @@ export function downLoadFile(content: string | Blob) {
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  URL.revokeObjectURL(url)*/
 }
 
 export function openFile(accept: string) {
