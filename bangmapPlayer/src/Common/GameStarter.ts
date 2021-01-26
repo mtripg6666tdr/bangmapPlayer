@@ -1,11 +1,21 @@
 import { DetailedSongInfoInner, DifficultyNames, SongID } from "../Core/SongInfo";
 import * as FileName from "../Core/FileName";
-import { bangMapAppElements } from "../Util/bangmapAppElements";
+import { bangMapAppElements, hideNavBar, unhideNavBar } from "../Util/bangmapAppElements";
 import { FileUtil } from "../Util/fileUtil";
 import { Game } from "bangbangboom-game-remixed";
 import { PreferenceDataManager } from "./PreferenceDataManager";
+import { SongListAdapter } from "./ListAdapter";
+import bangMapApp from "..";
 
-export async function GameStart(directoryEntry:DirectoryEntry, id:SongID, songName:string, elems:bangMapAppElements, configMan:PreferenceDataManager){
+export async function GameStart(
+        directoryEntry:DirectoryEntry, 
+        id:SongID, 
+        songName:string,
+        elems:bangMapAppElements, 
+        adapters:SongListAdapter[],
+        app:bangMapApp,
+        configMan:PreferenceDataManager
+    ){
     const diff:DifficultyNames = elems.Container.songInfo.childlen.DifficultySelection.Easy.checked ? "Easy" :
                                 elems.Container.songInfo.childlen.DifficultySelection.Normal.checked ? "Normal" :
                                 elems.Container.songInfo.childlen.DifficultySelection.Hard.checked ? "Hard":"Special";
@@ -22,7 +32,10 @@ export async function GameStart(directoryEntry:DirectoryEntry, id:SongID, songNa
     canvas.style.width = "100%";
     elems.MainCanvas.appendChild(canvas);
     elems.MainCanvas.style.display = "block";
-    document.getElementsByTagName("nav")[0].style.display = "none";
+
+    hideNavBar();
+    adapters.forEach(adapter => adapter.RemoveAllChildlen());
+
     const game = new Game(canvas, configMan.ExportConfig(), {
         backgroundSrc: "/android_asset/www/assets/local/bg.jpg",
         loadingMessages: ["Loading...", "Powered by bangbangboom"],
@@ -39,7 +52,8 @@ export async function GameStart(directoryEntry:DirectoryEntry, id:SongID, songNa
             detailedsonginfoFile.writeText(JSON.stringify(info));
         }
         elems.MainCanvas.removeChild(canvas);
-        document.getElementsByTagName("nav")[0].style.display = "block";
+        unhideNavBar();
+        app.ApplyFilter();
     };
     game.start();
 }

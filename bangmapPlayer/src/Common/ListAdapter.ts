@@ -35,6 +35,10 @@ export class SongListAdapter extends Adapter {
         return this;
     }
 
+    RemoveAllChildlen(){
+        this._removeAllChildlen();
+    }
+
     private _removeAllChildlen(){
         const olds = this.element.children;
         while(olds.length > 0){

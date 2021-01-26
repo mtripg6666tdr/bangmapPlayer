@@ -133,3 +133,5 @@ export function initBangmapAppElements():bangMapAppElements {
         MainCanvas: document.getElementById("app_game")
     };
 }
+
+export { hideNavBar, unhideNavBar } from "./bangmapAppElements.util";

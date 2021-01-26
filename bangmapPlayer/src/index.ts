@@ -173,6 +173,7 @@ export default class bangMapApp {
         this.Elements.Fragment.songList_favorite.style.display = this.Elements.Filter.favoriteRadio.checked ? "block" : "none";
     }
 
+    ApplyFilter(){this.onSonglistComboFilterChanged();}
     private onSonglistComboFilterChanged(){
         var auditor:(v:SongInfoInner)=>boolean = null;
         if(!this.Elements.Filter.bandCombo.value.startsWith("Filter")){
@@ -271,6 +272,13 @@ export default class bangMapApp {
         }else if(this.songids.indexOf(songid) < 0){ // ID was not find in db
             return;
         }
-        GameStart(this.dataDirectory, songid, this.Elements.Container.songInfo.childlen.Title.textContent + " - " + this.Elements.Container.songInfo.childlen.BandName.textContent, this.Elements, this.preferenceDataManager);
+        GameStart(
+            this.dataDirectory,
+            songid, 
+            this.Elements.Container.songInfo.childlen.Title.textContent + " - " + this.Elements.Container.songInfo.childlen.BandName.textContent, 
+            this.Elements, 
+            [this.allSongAdapter, this.dlSongAdapter, this.historySongAdapter, this.favoriteSongAdapter], 
+            this, this.preferenceDataManager
+        );
     }
 }
